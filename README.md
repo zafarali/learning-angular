@@ -27,5 +27,12 @@ AngularJS relies heavily on the MVC approach:
 - the **controller** which contains all the logic.
 
 There are some *buzzwords* used in AngularJS:
-- **Data Binding** is the sync of data between the model and the view
-- **Scope** this is where the model is stored, think of it as the traditional *scope* that allows all other components to access the data in the model.
+- **Data Binding** is the sync of data between the model and the view 
+- **Two way Data Binding** is a feature of angular that says that everything in the document is live. Whenever the input changes the expression is automatically recacluated and the DOM is updated as well.
+- **Scope** this is where the variables and data (known as model) are stored, think of it as the traditional *scope* that allows all other components to access the data in the model.
+- **Templates** all HTML files with angular code are known as templates because angular must fill in expressions and other gadgematics.
+- **Directives** apply special behaviour to HTML elements. For example the `ng-app` attribute in our [00-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-concepts.html) file is linked to a directive that automatically initializes the application. When we define `ng-model` attributes to our `<input>` element, we create a directive that stores and updates the value from the `<input>` field to the *scope*.
+- **filter*s format the value of an expression for display to the user. Filters are very useful and in our [00-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-concepts.html) file we use `currency` to format the output of the expression to resemble a bill or currency.
+
+The image summarizes [00-1-conteps.html](https://github.com/zafarali/learning-angular/blob/master/00-1-concepts.html)  
+![Interaction between Controllers-Scope/Model-View](https://docs.angularjs.org/img/guide/concepts-databinding2.png)  *image from [AngularJs Docs](https://docs.angularjs.org/guide/concepts)*

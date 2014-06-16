@@ -11,9 +11,11 @@ AngularJS by Brad Green and Shyam Seshadri (O’Reilly). Copyright 2013 Brad Gre
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular.min.js"></script>
 	
 	<script>
+	//here we create an app called 'shop'
+	var app = angular.module('shop', []);
 
 	//injecting the $scope into the Shop controller
-	function Shop($scope){
+	app.controller('Cart', function($scope){
 
 		//this array holds the available items
 		$scope.available = [
@@ -47,13 +49,13 @@ AngularJS by Brad Green and Shyam Seshadri (O’Reilly). Copyright 2013 Brad Gre
 			}
 			return sum;
 		}
-	}
+	});
 	</script>
 
 
 </head>
-<body ng-app="">
-<div id="wrapper" ng-controller="Shop">
+<body ng-app="shop">
+<div id="wrapper" ng-controller="Cart">
 	<div id="suggested">
 		<div ng-repeat="item in available">
 			<!--ng-repeat iterates over the whole $scope.available array-->

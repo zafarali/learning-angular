@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<!--This app is a modified version of the app presented in the AngularJS book demonstrating some of the useful features of AngularJS
+AngularJS by Brad Green and Shyam Seshadri (O’Reilly). Copyright 2013 Brad Green and Shyam Seshadri, 978-1-449-34485-6.-->
+<head>
+	<title>Shopping Cart</title>
+<style>*{font-family: Tahoma; font-size: 1em;}#wrapper{width:100%;}
+#suggested,#current{width:50%; margin:0 auto; border:solid black 1px;}; h3{font-size:1.5em}</style>
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular.min.js"></script>
+	
+	<script>
+
+	//injecting the $scope into the Shop controller
+	function Shop($scope){
+
+		//this array holds the available items
+		$scope.available = [
+			{title:'Pencils', price:10},
+			{title:'Pens', price:11},
+			{title: 'Eraser', price:1},
+			{title: 'Notebook', price:15}
+		];
+
+		//this array holds the shopping cart
+		$scope.cart = [];
+
+		//this function adds an item to the cart
+		$scope.add = function(index){
+			var qty = parseInt(prompt("How many?"));
+			item = $scope.available[index];
+			$scope.cart.push({title:item.title, qty:qty, price:item.price});
+			alert("Added "+qty+" of "+item.title);
+		}
+
+		//this function removes an item from the cart
+		$scope.remove = function(index){
+			$scope.cart.splice(index,1);
+		}
+
+		//this function calculates the total cost of the cart
+		$scope.total = function(cart){
+			var sum = 0;
+			for(var i = 0,l = cart.length; i <l; i++){
+				sum = sum + (cart[i].qty * cart[i].price);
+			}
+			return sum;
+		}
+	}
+	</script>
+
+
+</head>
+<body ng-app="">
+<div id="wrapper" ng-controller="Shop">
+	<div id="suggested">
+		<div ng-repeat="item in available">
+			<!--ng-repeat iterates over the whole $scope.available array-->
+			<span>{{item.title}}</span>
+			<span><b>Price: {{item.price | currency}}</b></span>
+
+			<button ng-click="add($index)">Add</button>
+			<!--Here we pass the $index which holds the iteration number-->
+			
+		</div>
+	</div>
+	<div id="current">
+		<div ng-repeat="item in cart">
+			<span>{{item.title}}</span>
+			<span>Price: {{item.price | currency}}, Qty: {{item.qty}}<br />
+
+			<!--Here we do a quick expression evaluation-->
+			<b>Total: {{item.price * item.qty | currency }}</b></span>
+
+			<button ng-click="remove($index)">Remove</button>
+			<br />
+		</div>
+		<h3> Grand Total {{ total(cart) | currency }}</h3>
+		<!--Here we execute a fucntion total() that takes in the shopping cart as an argument-->
+	</div>
+</div>
+</body>
+</html>

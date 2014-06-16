@@ -40,3 +40,62 @@ The image summarizes [00-1-concepts.html](https://github.com/zafarali/learning-a
 - **Services** contain all the 'independant logic', which is other words is a way to supply and manipulate data to our application. We use services to allow us to resue it in other parts of the application. For example in [00-1-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-1-concepts.html) all the logic was stored within `InvoiceController`. In [00-2-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-2-concepts.html) we will refactor the code to move the conversion logic into a service in another module.
 
 - **Dependency Injection** In [00-2-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-2-concepts.html) we see that `ng-app` defines `invoice-srv-demo` as the main module to use in application. In the defintiion of this module we state that `finance` is a dependancy to the main module. We also define the constructor for the controller after passing in the dependancy `currencyConverter` from the finance module. This is known as *dependency injection*
+
+###00-spin.html
+####The Dot.
+Found this gotcha thanks to [this video](http://www.thinkster.io/angularjs/axAQatdKIq/angularjs-the-dot).
+```html
+	<script>
+		function FirstCtrl($scope) {}
+		function SecondCtrl($scope) {} 
+	</script>
+	<div ng-app="">
+		<div ng-controller="myCtrl">
+			<input type="text" ng-model="message">
+			<br /><h1><b>{{message}}</b></h1>
+		</div>
+		<div ng-controller="yourCtrl">
+			<input type="text" ng-model="message">
+			<br /><h1><b>{{message}}</b></h1>
+		</div>
+	</div>
+```
+If we set up our code as above, *scope inheritence* is broken Each new `ng-model` that we set up for the `message` is creating a new instance of message which means there is no longer communication between the two `message`s. To rectify this we place a `data` model on the `$scope` which has the `message` property. I like to think of this as each controller getting its own scope because recitifying the code as shown below also doesn't fix the issue and no data is shared between the two controllers.
+```html
+	<!--Script remains the same-->
+	<div ng-app="">
+		<div ng-controller="myCtrl">
+			<input type="text" ng-model="data.message">
+			<br /><h1><b>{{data.message}}</b></h1>
+		</div>
+		<div ng-controller="yourCtrl">
+			<input type="text" ng-model="data.message">
+			<br /><h1><b>{{data.message}}</b></h1>
+		</div>
+	</div>
+```
+However editing the code in a way (below) such that there is a scope set up for the entire application will ensure that the scope can sync data between the controllers.
+```html
+<!--Script remains the same, we initialize data.message with 'hi'-->
+	<div ng-app="" ng-init="data.message='hi'">
+		{{data.message}}
+		<div ng-controller="myCtrl">
+			<h1>{{2+2}}</h1>
+			Type in a message: <input type="text" ng-model="data.message">
+			<br /><h1><b>{{data.message}}</b></h1>
+		</div>
+		<div ng-controller="yourCtrl">
+			Type in a message: <input type="text" ng-model="data.message">
+			<br /><h1><b>{{data.message}}</b></h1>
+		</div>
+```
+*(this observation is indeed true, we need to have a parent to allow this kind of inheritence)*. We now look at a different way to do this.
+####Data sharing between controllers
+This can be done by creating a *factory* which will supply the data. We then bind the local `$scope`s to the `Data` factory where we can then sync data between the controllers. See [00-2-spin.html](https://github.com/zafarali/learning-angular/blob/master/00-2-spin.html).
+```javascript
+var myApp = angular.module('myApp', []);
+myApp.factory('Data', function(){return{message:"this is important"};});
+function myCtrl($scope,Data){$scope.data = Data;}
+function yourCtrl($scope,Data){$scope.data = Data;}
+```
+

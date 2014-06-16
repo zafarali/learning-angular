@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>00-concepts</title>
+	<!--This script contains all the code which makes AngularJS Run on our website-->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.11/angular.min.js"></script>
+	<script>
+	angular.module('invoice-cntrl-demo', [])
+		//.controller is a function that creates a controller using a function we supply.
+		.controller('InvoiceController', function(){
+			//all standard JS stuff when creating an object
+			this.qty=1;
+			this.cost=2;
+			this.selectedCurrency='USD';
+			this.currencies = ['USD', 'EUR', 'CNY'];
+			this.usdExchangeRates = {
+				USD:1, EUR:0.74, CNY:6.09
+			};
+			this.total = function total(outputCurrency){
+				return this.convert(this.qty*this.cost, this.selectedCurrency, outputCurrency);
+			};
+			this.convert = function convert(amount, from, to){
+				return amount * this.usdExchangeRates[to] / this.usdExchangeRates[from];
+			};
+			this.pay = function pay(){
+				window.alert("thanks!");
+			};
+		});
+	</script>
+</head>
+<body>
+<h1>Controllers</h1><br />
+<div ng-app="invoice-cntrl-demo" ng-controller="InvoiceController as invoice">
+<!--Says that the 'InvoiceController' is responsible for the element and we store it into 'invoice' on the scope-->
+<b>Invoice:</b>
+<div>
+	Quantitiy: <input type="number" ng-model="invoice.qty" required>
+</div>
+<div>
+	Costs: <input type="number" ng-model="invoice.cost" required>
+	<select ng-model="invoice.selectedCurrency">
+		<option ng-repeat="c in invoice.currencies">{{c}}</option>
+		<!--ng-repeat iterates through all elements in the currencies attribute of the invoice object-->
+	</select>
+</div>
+<div>
+	<b>Total:</b>
+	<span ng-repeat="c in invoice.currencies">
+		{{invoice.total(c) | currency:c }}
+	</span>
+	<button class="btn" ng-click="invoice.pay()">Pay</button>
+	<!--Refers to the pay() function within the invoice object-->
+</div>
+</div>
+</body>
+</html>

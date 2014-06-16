@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- We haven't changed much in this page except of the name of the app. 
+Take a look at the Javascript for the real magic-->
+	<title>00-concepts</title>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.11/angular.min.js"></script>
+<script>
+							//here we state that 'finance' is a dependancy
+angular.module('invoice-srv-demo', ['finance'])
+				//here we create a 'currencyConverter' and pass
+				//it into the constructor for InvoiceController
+	.controller('InvoiceController', ['currencyConverter', function(currencyConverter){
+		this.qty=1;
+		this.cost=2;
+		this.selectedCurrency='USD';
+		this.currencies=currencyConverter.currencies;
+
+		this.total = function total(output){
+			return currencyConverter.convert(this.qty * this.cost, this.selectedCurrency, output);
+		};
+
+		this.pay = function pay(){
+			window.alert("Thanks!");
+		}
+	}]);
+	angular.module('finances', [])
+		/*here we create a 'factory' or 'service' called 'currencyConverter'
+		it contains the logic/reusable code in our application
+		*/
+		.factory('currencyConverter', function(){
+			var currencies = ['USD', 'EUR', 'CNY'];
+			var usdExchange = {
+				USD: 1, EUR: 0.74, CNY: 6.09
+			};
+			var convert = function(amount, selected, output){
+				return amount * usdExchange[output]/usdExchange[selected];
+			};
+
+			return {
+				//these are the objects/values returned by the factory/service for use in other controllers/modules
+				currencies:currencies,
+				convert:convert
+			};
+		});
+</script>
+</head>
+<body>
+<h1>Services and Dependency Injection</h1><br />
+<!--ng-app tells angular what the main module is-->
+<div ng-app="invoice-srv-demo" ng-controller="InvoiceController as invoice">
+<b>Invoice:</b>
+<div>
+	Quantitiy: <input type="number" ng-model="invoice.qty" required>
+</div>
+<div>
+	Costs: <input type="number" ng-model="invoice.cost" required>
+	<select ng-model="invoice.selectedCurrency">
+		<option ng-repeat="c in invoice.currencies">{{c}}</option>
+	</select>
+</div>
+<div>
+	<b>Total:</b>
+	<span ng-repeat="c in invoice.currencies">
+		{{invoice.total(c) | currency:c }}
+	</span>
+	<button class="btn" ng-click="invoice.pay()">Pay</button>
+</div>
+</div>
+</body>
+</html>

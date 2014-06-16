@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Taking AngularJS for a spin</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular.min.js"></script>
+	<script>
+	function myCtrl($scope){}
+	function yourCtrl($scope){}
+	</script>
+</head>
+<body>
+	<div ng-app="" ng-init="data.message='hi'">
+		{{data.message}}
+		<div ng-controller="myCtrl">
+			<h1>{{2+2}}</h1>
+			Type in a message: <input type="text" ng-model="data.message">
+			<br /><h1><b>{{data.message}}</b></h1>
+		</div>
+		<div ng-controller="yourCtrl">
+			Type in a message: <input type="text" ng-model="data.message">
+			<br /><h1><b>{{data.message}}</b></h1>
+		</div>
+	</div>
+</body>
+</html>

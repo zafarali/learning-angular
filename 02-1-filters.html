@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<!--This is a modified version of the form demonstration on https://docs.angularjs.org/guide/forms-->
+<head>
+	<title>Custom Filter</title>
+	<style>
+		*{font-family: Tahoma; font-size: 1em;}#wrapper{width:100%;}; 
+		#inner{width:50%; margin:0 auto; border:solid black 1px;};
+	</style>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular.min.js"></script>
+	
+	<script>
+	var app = angular.module('myApp', []);
+	//create a factory for Data
+	app.factory('Data', function(){
+		return {message:"I'm data from a service"}
+	});
+	//create a controller, inject the Data and scope
+	app.controller('Ctrl', ['$scope', 'Data', function($scope, Data){
+		$scope.data = Data;
+	}]);
+	
+	//create a filter which reverses your input text
+	app.filter('reverse', function(){
+		return function(text){
+			return text.split("").reverse().join("");
+		}
+	});
+	</script>
+
+</head>
+<body ng-app="myApp">
+<div id="wrapper"><div id="inner" ng-controller="Ctrl">
+	<input type="text" ng-model="data.message"><br />
+	{{data.message | reverse }}
+	<!--Here we call on the 'reverse' filter using the pipe-->
+</div></div>
+</body>
+</html>

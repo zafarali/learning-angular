@@ -1,11 +1,12 @@
 Learning AngularJS
 ================
 So I've been meaning to learn AngularJS for some time now and I've watched a few videos here and there but kept on dropping and never building anything concrete. This repo will help me track my progress through two curriculums I've found on thinkster.io and codeschool.com:  
+
 1. [A Better Way to Learn AngularJS](http://www.thinkster.io/angularjs/GtaQ0oMGIl/a-better-way-to-learn-angularjs)  
 2. [Shaping up with AngularJS](http://campus.codeschool.com/courses/shaping-up-with-angular-js/intro)  
 3. [AngularJS Tutorial: Learn to build Modern Webapps](http://www.thinkster.io/angularjs/r1gRPYp4kM/angularjs-tutorial-learn-to-build-modern-webapps)  
 
-This repository will also include code from other sources which I will cite in the comments and below when I find them. 
+This repository will also include code from other sources which I will cite in the comments and below when I find them. There are also basic code example as alternative to demos shown in the videos so that we can see more than one example to be able to accurately wrap ones head around.
 
 This README will also track some codes, gotchas, comments and other shenanigans to help others like me learning AngularJS for the first/second/third time. Hope this helps!
 
@@ -152,3 +153,5 @@ This [commit](https://github.com/zafarali/learning-angular/commit/403aad17fce1eb
 ```
 ####Useful Directives
 Directives default to `restrict:"A"`. The directive will also pass in the `scope` and `element` which we can use. As shown in [03-2-directives.html](https://github.com/zafarali/learning-angular/commit/d9e6515d2c8dd7b816907f98b9fa8f75472d4956). The directive also passes the `attrs` which is an object with all the attributes of the element. We can exploit this to make our code abstract when we want to add/remove classes. This is demonstrated in [this commit](https://github.com/zafarali/learning-angular/commit/a0636adf5790aeeb7d20489133bdc23d7d338578). We also see the use of `$apply()` to evaluate functions in [this example](https://github.com/zafarali/learning-angular/blob/master/03-3-directives.html).
+####Directive Communication ([03-4-readinglist.html](https://github.com/zafarali/learning-angular/blob/master/03-4-readinglist.html))
+Directives can communicate with each other as shown in the Reading List Example. Here we create a directive called `<book>` and a couple of attributes that are dependant on the `book` directive.Each `<book>` has a local scope as defined. `<book>` also has an API which can control the local scope. Each attribute we define accesses the `<book>` API to manipulate its properties. The properties can be viewed when we roll over it.

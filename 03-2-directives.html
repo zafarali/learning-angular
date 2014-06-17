@@ -14,26 +14,44 @@
 
 		app.directive("enter", function(){
 			//by default this is of restrict:'A'
-			return function(scope, element){
+			return function(scope, element, attrs){
 				element.bind("mouseenter", function(){
-					console.log("Entered!");
+					element.removeClass(attrs.class)
+					element.addClass(attrs.enter);
 				});
 			};
 		});
 
 		app.directive("leave", function(){
 			//by default this is of restrict:'A'
-			return function(scope, element){
+			return function(scope, element,attrs){
 				element.bind("mouseleave", function(){
-					console.log("Left!");
+					element.removeClass(attrs.class);
+					element.addClass(attrs.leave);
 				});
 			};
 		});
 
 </script>
 
+<!--The following is style we are going to use in our manipulations-->
+<style>
+.green{
+	background-color: green;
+	border:1px solid black;
+}
+.hover{
+	background-color:red;
+	border:1px solid black;
+}
+.warnOrange{
+	background-color: orange;
+	border:1px solid black;
+}
+</style>
 </head>
 <body ng-app="usefulDirectives">
-<div enter leave>Content</div>
+<div enter="hover" leave="warnOrange" class="warnOrange">THIS IS VERY IMPORTANT! ROLL OVER!</div><br />
+<div enter="hover" leave="warnOrange" class="green">This is not important until you roll over!</div>
 </body>
 </html>

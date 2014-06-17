@@ -98,14 +98,57 @@ myApp.factory('Data', function(){return{message:"this is important"};});
 function myCtrl($scope,Data){$scope.data = Data;}
 function yourCtrl($scope,Data){$scope.data = Data;}
 ```
-####Shopping Cart (01-1-shopping and 01-1-forms)
+###Shopping Cart (01-1-shopping and 01-1-forms)
 The [shopping cart](https://github.com/zafarali/learning-angular/blob/master/01-1-shopping.html) example demonstrates some of the other functionality of the AngularJS framework. You may have noticed that we have seen two ways to creating `controller`s:
 ```javascript
-\\method 1
+//method 1
 function Ctrl($scope) {};
-\\method 2
+//method 2
 var myApp = angular.module('myApp', []);
 myApp.controller('Ctrl', function($scope){});
 ```
 We can compare the two using our shopping cart app in [this commit](https://github.com/zafarali/learning-angular/commit/ce54e0d417f80a0087035b62e92a6f8030ccd4c0#diff-1d019a5313eee180347d30c7801153a5). Method 2 ensures that we keep our controllers out of the global namespace using the module we defined.  
 The docs page regarding [forms](https://docs.angularjs.org/guide/forms) we find a whole load of neat tricks and tips that are demonstrated in [01-01-forms.html](https://github.com/zafarali/learning-angular/blob/master/01-1-forms.html). The page also demonstrates the abilities of `ng-show`, `ng-hide`, and validation techniques that AngularJS provides.
+###02-Filters
+####Custom filters
+There's only syntax to learn here, watched this [video] and see the (http://www.thinkster.io/angularjs/EnA7rkqH82/angularjs-filters) dummy code I [typed](https://github.com/zafarali/learning-angular/blob/master/02-1-filters.html) up. Another example is shown below using extra aruments that can be used as `text|decimal2binary:true`:
+```javascript
+//converts decimals to binary form (i don't think this really works)
+app.filter('decimal2binary', function(){
+	function convert(num,bool){
+		if(bool){ console.log("you said true as argument!");}
+		num = parseInt(num);
+		if(num === 0){
+			return 1;
+		}else{
+			remainder = num % 2;
+			return convert(num/2)+""+remainder;
+		}
+	}
+	return function(input, bool){
+		return convert(input, bool);
+	}
+});
+```
+####Searching and filters
+We can see an implementation of the search technique in [02-2-filters.html](https://github.com/zafarali/learning-angular/blob/master/02-2-filters.html). Some other in-built AngularJS filters are summarized below:
+- `limitTo` will limit the number of results shown
+- `orderBy` takes a string and will order the results using the property it maps to
+- `lowercase` and `uppercase` turn the results to lower and upper case (these are best applied to the data binding as shown below)
+- `date`, `currency` format our data and are self explanatory
+- `number` takes a integer and rounds off the data to that decimal place. (eg: 0 would round off to 0dp)
+```html
+<span ng-repeat="element in list | filter: search | orderBy: 'lastname' | limitTo: 4">
+{{element.lastname | uppercase}}, {{element.firstname | lowercase}}
+</span>
+```
+###03-Directives
+####Custom elements
+Directives are one of the  most impressive features AngularJS has to offer. In our first example we create a directive which is of `restrict`ion `'E'` which means that it is an element. Our directive is simple in that it just shows an image of a calculator created by the `<caclulator>` element. The [commit](https://github.com/zafarali/learning-angular/commit/fa0b6c1864501592e73ef3cea3e47e34c9763942) shows the code in detail.
+####Custom Attributes and Classes
+This [commit](https://github.com/zafarali/learning-angular/commit/403aad17fce1eb09e58b759dad63025db5166cf8) demonstrates a custom attribute we build. Here instead of setting `restrict:"E"` we set `restrict:"A"` and provide a `link` function which is executed whenever the attribute is attached. If we set `restrict:"C"` then the directive is executed whenever we have the class with that name [(see commit)](https://github.com/zafarali/learning-angular/commit/552ae91250175137f9e2b742883c7973c463dd48). We can also have directives in comments using `restrict:"M"` and using the following:
+```html
+<!--directive:myDirective-->
+```
+####Useful Directives
+Directives default to `restrict:"A"`. The directive will also pass in the `scope` and `element` which we can use. As shown in [03-2-directives.html](https://github.com/zafarali/learning-angular/commit/d9e6515d2c8dd7b816907f98b9fa8f75472d4956). The directive also passes the `attrs` which is an object with all the attributes of the element. We can exploit this to make our code abstract when we want to add/remove classes. This is demonstrated in [this commit](https://github.com/zafarali/learning-angular/commit/a0636adf5790aeeb7d20489133bdc23d7d338578). We also see the use of `$apply()` to evaluate functions in [this example](https://github.com/zafarali/learning-angular/blob/master/03-3-directives.html).

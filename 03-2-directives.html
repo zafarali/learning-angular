@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>directives</title>
+	<style>
+		*{font-family: Tahoma; font-size: 1em;}#wrapper{width:100%;}; 
+		#inner{width:50%; margin:0 auto; border:solid black 1px;};
+	</style>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular.min.js"></script>
+	
+<script>
+		var app = angular.module("usefulDirectives", []);
+
+		app.directive("enter", function(){
+			//by default this is of restrict:'A'
+			return function(scope, element){
+				element.bind("mouseenter", function(){
+					console.log("Entered!");
+				});
+			};
+		});
+
+		app.directive("leave", function(){
+			//by default this is of restrict:'A'
+			return function(scope, element){
+				element.bind("mouseleave", function(){
+					console.log("Left!");
+				});
+			};
+		});
+
+</script>
+
+</head>
+<body ng-app="usefulDirectives">
+<div enter leave>Content</div>
+</body>
+</html>

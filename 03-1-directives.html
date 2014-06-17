@@ -26,12 +26,22 @@
 				}
 			}
 		});
+
+		app.directive("calculus", function(){
+			return {
+				restrict:"C",//C for class
+				link:function(){
+					alert("lets do some integration!")
+				}
+			}
+		});
 	</script>
 
 </head>
 <body ng-app="myApp">
 <div id="wrapper">
-	<calculator></calculator><br />
+	<!--Here we give one of our calculators the calculus class.-->
+	<calculator class="calculus"></calculator><br />
 	<!--Here we give our calculator attribute the leak attribute which executes the linking function.
 	We could have just as well added the attribute to any other element-->
 	<calculator leak></calculator>

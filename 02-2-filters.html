@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+\<head>
+	<title>ng-filter</title>
+	<style>
+		*{font-family: Tahoma; font-size: 1em;}#wrapper{width:100%;}; 
+		#inner{width:50%; margin:0 auto; border:solid black 1px;};
+	</style>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular.min.js"></script>
+	
+	<script>
+	var app = angular.module("myApp", []);
+
+	//we create a factory to supply our data
+	app.factory('Phonebook', function(){
+		var Phonebook = {};
+		Phonebook.people = [
+			{name:"Andrew", phone:"1234567"},
+			{name:"Natasha", phone:"784211"},
+			{name:"Billy", phone:"1235571"},
+			{name:"Amanda", phone:"4112311"},
+			{name:"Police", phone:"911"},
+			{name:"Bilana", phone:"12991"}
+			];
+		return Phonebook;
+	});
+	function Ctrl($scope, Phonebook){
+		$scope.phonebook = Phonebook
+	}
+	</script>
+
+</head>
+<body ng-app="myApp">
+<div id="wrapper"><div id="inner" ng-controller="Ctrl">
+
+<!--This is just a general search using the $ sign.-->
+General Search:<input type="text" ng-model="searchText.$"><br />
+
+<!--By setting the certain properties of the searchText you can 
+limit to search only certain properties of the list-->
+Name Search <input type="text" ng-model="searchText.name"><br />
+Phone number Search <input type="text" ng-model="searchText.phone"><br />
+
+<!--The key thing here is to have 'searchText' as the string filter-->
+	<table><tr ng-repeat="person in phonebook.people | filter:searchText">
+		<td>{{$index+1}}</td>
+		<td>{{person.name}}</td>
+		<td>{{person.phone}}</td>
+	</tr></table>
+</div></div>
+</body>
+</html>

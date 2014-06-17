@@ -14,8 +14,6 @@ app.directive("book", function(){
 	return {
 		restrict:"E",
 		scope:{},//this gives each <book> an isolated scope  
-
-
 		controller: function($scope){
 			//creates a scope with functions and data
 
@@ -48,15 +46,9 @@ app.directive("book", function(){
 				$scope.properties.author=author;
 			}
 		},
-
+		template: '<div>{{properties.title}} - {{properties.author}}</div>',
 		//A link function for when the <book> loads
 		link: function(scope, element){
-			//onload we set the title and author of the <book>
-			var fulltitle = element.html();
-			fulltitle = fulltitle.split("-");
-			scope.properties.title = fulltitle[0];
-			scope.properties.author= fulltitle[1] || '';
-
 			//for demo purposes rolling over logs the properties of the book.
 			element.bind("mouseenter", function(){
 				console.log(scope.properties);
@@ -127,11 +119,11 @@ app.directive("author", function(){
 <body ng-app="app">
 <div ng-controller="Ctrl">
 	<h4>Summer Reading List</h4>
-	<book autobiography>The Please of Finding Things Out - Richard Feyman</book><br />
-	<book author="Katherine Boo" fiction>Behind Beautiful Forevers</book><br />
-	<book thriller autobiography>Every Day is for the Thief</book><br />
-	<book author="Lee Child" thriller fiction>Lee child thriller here</book><br />
-	<book romance fiction author="Ariel Schrag">Adam</book>
+	<book autobiography title="The Pleasure of Finding Things Out" author="Richard Feyman"></book>
+	<book title="Behind Beautiful Forevers" author="Katherine Boo" fiction></book>
+	<book thriller autobiography title="Every Day is for the Thief"></book>
+	<book author="Lee Child" thriller fiction title="somethingsomething"></book>
+	<book romance fiction author="Ariel Schrag" title="Adam"></book>
 </div>
 </body>
 </html>

@@ -13,9 +13,18 @@
 		var app = angular.module("myApp", []);
 		app.directive("calculator", function(){
 			return {
-				restrict : "E",
+				restrict : "E",//E for element
 				template:"<img src='http://www.stat.osu.edu/~stated/images/calculator.gif'>"
 			};
+		});
+
+		app.directive("leak", function(){
+			return {
+				restrict:"A",//A for attribute
+				link:function(){
+					alert("spray!");
+				}
+			}
 		});
 	</script>
 
@@ -23,7 +32,9 @@
 <body ng-app="myApp">
 <div id="wrapper">
 	<calculator></calculator><br />
-	<calculator></calculator>
+	<!--Here we give our calculator attribute the leak attribute which executes the linking function.
+	We could have just as well added the attribute to any other element-->
+	<calculator leak></calculator>
 </div>
 </body>
 </html>

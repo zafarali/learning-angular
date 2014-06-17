@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Directive Communcation</title>
+	<style>*{font-family: Tahoma; font-size: 1em;}</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.17/angular.min.js"></script>
+	
+<script>
+var app = angular.module('app', []);
+app.controller("Ctrl", function($scope){});
+
+//creates the <book> directive
+app.directive("book", function(){
+	return {
+		restrict:"E",
+		scope:{},//this gives each <book> an isolated scope  
+
+
+		controller: function($scope){
+			//creates a scope with functions and data
+
+			$scope.properties={
+				fiction:false,
+				thriller:false,
+				romance:false,
+				autobiography:false,
+				title:"",
+				author:"",
+			},
+			
+			//binds functions to to the element as an API
+			this.makeFiction = function(){
+				$scope.properties.fiction = true;
+			}
+			this.makeThriller = function(){
+				$scope.properties.thriller = true;
+			}
+			this.makeRomance = function(){
+				$scope.properties.romance = true;
+			}
+			this.makeAbio = function(){
+				$scope.properties.autobiography= true;
+			}
+			this.setTitle = function(title){
+				$scope.properties.title=title;
+			}
+			this.setAuthor = function(author){
+				$scope.properties.author=author;
+			}
+		},
+
+		//A link function for when the <book> loads
+		link: function(scope, element){
+			//onload we set the title and author of the <book>
+			var fulltitle = element.html();
+			fulltitle = fulltitle.split("-");
+			scope.properties.title = fulltitle[0];
+			scope.properties.author= fulltitle[1] || '';
+
+			//for demo purposes rolling over logs the properties of the book.
+			element.bind("mouseenter", function(){
+				console.log(scope.properties);
+			})
+		}
+}
+});
+
+//we now define some custom attributes
+app.directive("fiction", function(){
+	return {
+		require:"book", //this states that we can only attach this attribute to <book>'s
+		//gives us access to the controller defined in <book>
+		link:function(scope,element,attrs,bookCtrl){
+			bookCtrl.makeFiction();
+		}
+	}
+});
+
+app.directive("thriller", function(){
+	return {
+		require:"book",
+		link:function(scope,elem,attrs,bookCtrl){
+			bookCtrl.makeThriller();
+		}
+	}
+});
+
+app.directive("romance", function(){
+	return {
+		require:"book",
+		link:function(scope,elem,attrs,bookCtrl){
+			bookCtrl.makeRomance();
+		}
+	}
+});
+
+app.directive("autobiography", function(){
+	return {
+		require:"book",
+		link:function(scope,elem,attrs,bkCtrl){
+			bkCtrl.makeAbio();
+		}
+	}
+});
+
+//overrides the given title
+app.directive("title", function(){
+	return {
+		require:"book",
+		link:function(scp, elm, attrs, bkCtrl){
+			bkCtrl.setTitle(attrs.title);
+		}
+	}
+});
+
+//overrides the given author
+app.directive("author", function(){
+	return {
+		require:"book",
+		link:function(scp, elm, attrs, bkCtrl){
+			bkCtrl.setAuthor(attrs.author);
+		}
+	}
+});
+</script>
+</head>
+<body ng-app="app">
+<div ng-controller="Ctrl">
+	<h4>Summer Reading List</h4>
+	<book autobiography>The Please of Finding Things Out - Richard Feyman</book><br />
+	<book author="Katherine Boo" fiction>Behind Beautiful Forevers</book><br />
+	<book thriller autobiography>Every Day is for the Thief</book><br />
+	<book author="Lee Child" thriller fiction>Lee child thriller here</book><br />
+	<book romance fiction author="Ariel Schrag">Adam</book>
+</div>
+</body>
+</html>

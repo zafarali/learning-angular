@@ -154,5 +154,40 @@ This [commit](https://github.com/zafarali/learning-angular/commit/403aad17fce1eb
 ####Useful Directives
 Directives default to `restrict:"A"`. The directive will also pass in the `scope` and `element` which we can use. As shown in [03-2-directives.html](https://github.com/zafarali/learning-angular/commit/d9e6515d2c8dd7b816907f98b9fa8f75472d4956). The directive also passes the `attrs` which is an object with all the attributes of the element. We can exploit this to make our code abstract when we want to add/remove classes. This is demonstrated in [this commit](https://github.com/zafarali/learning-angular/commit/a0636adf5790aeeb7d20489133bdc23d7d338578). We also see the use of `$apply()` to evaluate functions in [this example](https://github.com/zafarali/learning-angular/blob/master/03-3-directives.html).
 ####Directive Communication ([03-4-readinglist.html](https://github.com/zafarali/learning-angular/blob/master/03-4-readinglist.html))
-Directives can communicate with each other as shown in the Reading List Example. Here we create a directive called `<book>` and a couple of attributes that are dependant on the `book` directive.Each `<book>` has a local scope as defined. `<book>` also has an API which can control the local scope. Each attribute we define accesses the `<book>` API to manipulate its properties. The properties can be viewed when we roll over it. A streamlined way (albeit without the romance,thriller etc. properties) is shown in [03-6-elements.html](https://github.com/zafarali/learning-angular/blob/master/03-6-elements.html)
-We also have a `transclude` property which is demonstrated in [03-5-transclusion.html](https://github.com/zafarali/learning-angular/blob/master/03-5-transclusion.html) that allows whatever is inside our custom element to be placed inside it and not overwritten by the template.
+Directives can communicate with each other as shown in the Reading List Example. Here we create a directive called `<book>` and a couple of attributes that are dependant on the `book` directive.Each `<book>` has a local scope as defined. `<book>` also has an API which can control the local scope. Each attribute we define accesses the `<book>` API to manipulate its properties. The properties can be viewed when we roll over it. A streamlined way (albeit without the romance,thriller etc. properties) is shown in [03-6-elements.html](https://github.com/zafarali/learning-angular/blob/master/03-6-elements.html).  
+- **Transclusion** We also have a `transclude` property which is demonstrated in [03-5-transclusion.html](https://github.com/zafarali/learning-angular/blob/master/03-5-transclusion.html) that allows whatever is inside our custom element to be placed inside it and not overwritten by the template. 
+- *Nested elements* and how they communicate with each other are demonstrated in [03-7-nested.html](https://github.com/zafarali/learning-angular/blob/master/03-5-transclusion.html)
+
+####Directive properties
+Here is a summary of the properties I see are most useful in directives:
+- `restrict:"E"||"A"||"C"||"M"` this declares how the directive behaves, as an element, attribute, class or comment respectively. We can use any combination of these.
+- `template:"string"` allows your directives to have a template.
+- `templateUrl:"string"` allows your directive to load a URL as a template.
+- `replace:bool` if true it will replace the current element and by default it is false and will append to the element.
+- `transclude` Lets you move the children of the directive into a place inside the template. We do this by specifiying `ng-transclude` attribute of the target location. example (here it targets the `<span>` and not the other `<div>`s:
+```javascript
+//...
+transclude:true,
+template:"<div><div><span ng-transclude></span></div></div>",
+//...
+```
+- `link:function()` executes when the directive sets up. Can be useful in setting `timeout`s, or binding `event`s to the element
+- `controller:function()` allows you to set up scope properties and create an interface for other directives to interact with.
+-`scope:{}` allows you to create a new scope for the element rather than inherit from the parent
+- `require:['^directives']` makes it mandatory for the current directive to be nested in the parent to ensure it functions correctly.  
+A quick gotcha to note, when you name your directive `datePicker` when declaring it, you can refer to it as `date-picker` in your HTML.
+
+####Pre-link, Post-link and Compile
+From the readings it seems there are two important phases when an angular application is being created. 
+1. The Loading of the Script (not so important for us right now)
+2. The **compile phase** is when the directives are registered, the templates are applied and the *compile* function is executed.
+3. The **link phase** occurs once the templates have been applied and the compile functions have been executed. In this phase the *link* functions are executed whenever the data in the view is updated.  
+The main difference I see in them is that the *compile* function is executed once only during the compilation stage while the link function is executed once for each instance of the directive. At the moment I do not see an immediate use case for the compile function, however the book suggests that it is useful when you need to modify something in relation to all cases. Note the difference between the function defintions below, the compile function doesn't have access to the scope because it is not created yet.
+```javascript
+return {
+	restrict:"E",
+	controller:function(scope,element,attrs){},
+	compile: function(templateElement, templateAttrs, transclude){},
+	link: function(scope, instanceElement, instanceAttrs, controller){}
+}
+```

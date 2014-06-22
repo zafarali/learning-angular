@@ -196,10 +196,12 @@ If we take a look at [03-8-compilevslink.html](https://github.com/zafarali/learn
 
 ###04-Scopes
 ####Isolate Scope
-We can demonstrate a simple way to create an isolate scope for each directive we create as shown [04-0-scope.html](https://github.com/zafarali/learning-angular/blob/master/04-0-scope.html) 
-##### `@`
+We can demonstrate a simple way to create an isolate scope for each directive we create as shown [04-0-scope.html](https://github.com/zafarali/learning-angular/blob/master/04-0-scope.html). When we define a directive, a property we can return is `scope`. This can be set to be `true`, `false`, or `{/*stuff inside*/}`. When we set to `false` (by default), it will use the existing scope in the directive. `true` will inherit the scope from the parent. `{}` will create an isolate scope for each directive. When you define an isolate scope there are *binding strategies* or methods of getting data into that scope. They are discussed below.
+##### @
 We demonstrate two methods of using attributes to store data into the directives isolate scope in [04-1-scope.html](https://github.com/zafarali/learning-angular/blob/master/04-1-scope.html) 
-##### `=`
+##### =
 The `@` operator will expect a string to bind the information we want to pass, however, the `=` will expect an object, this allows us to set up a two way binding between the parent scope and our directive scope. [04-2-scope.html](https://github.com/zafarali/learning-angular/blob/master/04-2-scope.html) demonstrates how updating the directive scope updates the parent. Note that in our attribute we are now passing objects and not strings.
-##### `&`
-The `&` operator will evaluate an expression that you pass to it. (WORK IN PROGRESS NOT YET FIGURED OUT HOW THIS WORKS)
+##### &
+The `&` operator will evaluate an expression that you pass to it. So it seems that if you are passing values between the controller and the directive you need it to be in an object, and the object must map its properties to the function. This is demonstrated in [04-3-scope.html](https://github.com/zafarali/learning-angular/blob/master/04-3-scope.html).
+##### All together now!
+[04-4-review.html](https://github.com/zafarali/learning-angular/blob/master/04-4-review.html) encapsulates all the concepts we have discussed so far. Note that when we use `=`, we assume that the user is going to order from the same bookstore and thus we would like reflect the change in all other directives.

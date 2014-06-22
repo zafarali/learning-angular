@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>scope review</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.11/angular.min.js"></script>
+
+<script>
+	var app = angular.module('giftApp', []);
+
+	app.controller('Ctrl', function($scope){
+		
+		$scope.orderBook = function(bookTitle, username, store){
+			console.log('Ordering '+bookTitle+' from '+store+' to be delivered to '+username);
+		}
+	});
+
+	app.directive('book', function(){
+		return {
+			restrict: 'E',
+			scope:{
+				bookTitle: '@',//gets a string from the book-title attribute
+				bookStore: '=', //binds to an object 
+				order:'&' //executes an expression
+			},
+			template: 'Select a bookstore: <select ng-model="bookStore" ng-options="store for store in bookstores"></select>'+
+			'{{bookTitle}} delivered to <input type="text" ng-model="name">'+
+			'<button ng-click="order({bookTitle:bookTitle, username:name, store:bookStore})">Order</button>',
+			link:function(scope){
+				scope.bookstores = [
+					"CHAPTERS",
+					"INDIGO",
+					"BARNES & NOBLES"
+				];
+				scope.bookStore = scope.bookstores[0];
+			}
+		}
+	})
+</script>
+</head>
+<body>
+<div ng-app="giftApp" ng-controller="Ctrl">
+
+<book book-title="Harry Potter" book-store="bookstore" order="orderBook(bookTitle,username,store)"></book><br />
+<book book-title="Game of Thrones" book-store="bookstore" order="orderBook(bookTitle,username,store)"></book>
+</div>
+</body>
+</html>

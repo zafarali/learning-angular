@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>scope</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.11/angular.min.js"></script>
+
+	<script>
+	var app = angular.module('myApp', []);
+	app.controller('Ctrl', ['$scope', function($scope){
+		$scope.makeCall = function(reciever){
+			alert("Calling "+reciever+"...");
+		}
+	}]);
+
+	app.directive('phone', function(){
+		return {
+			scope:{
+				dial:'&'
+			},
+			template:'<div>Who would you like to call?'+
+			'<input type="text" ng-model="who">'+
+			'<a href="#" ng-click="dial({reciever:who})">Call {{who}}</a></div>'
+		}
+	})
+	</script>
+</head>
+<body>
+<div ng-app="myApp" ng-controller='Ctrl'>
+<div phone dial="makeCall(reciever)"></div>
+<div phone dial="makeCall(reciever)"></div>
+<div phone dial="makeCall(reciever)"></div>
+<div phone dial="makeCall(reciever)"></div>
+
+</div>
+</body>
+</html>

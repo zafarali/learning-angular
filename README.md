@@ -182,12 +182,14 @@ From the readings it seems there are two important phases when an angular applic
 1. The Loading of the Script (not so important for us right now)
 2. The **compile phase** is when the directives are registered, the templates are applied and the *compile* function is executed.
 3. The **link phase** occurs once the templates have been applied and the compile functions have been executed. In this phase the *link* functions are executed whenever the data in the view is updated.  
-The main difference I see in them is that the *compile* function is executed once only during the compilation stage while the link function is executed once for each instance of the directive. At the moment I do not see an immediate use case for the compile function, however the book suggests that it is useful when you need to modify something in relation to all cases. Note the difference between the function defintions below, the compile function doesn't have access to the scope because it is not created yet.
+The main difference I see in them is that the *compile* function is executed once only during the compilation stage while the `link` function is executed once for each instance of the directive. At the moment I do not see an immediate use case for the compile function, however the book suggests that it is useful when you need to modify something in relation to all cases. Note the difference between the function defintions below, the `compile` function doesn't have access to the scope because it is not created yet.
 ```javascript
 return {
-	restrict:"E",
+	restrict:"",
+	require:"",
 	controller:function(scope,element,attrs){},
 	compile: function(templateElement, templateAttrs, transclude){},
 	link: function(scope, instanceElement, instanceAttrs, controller){}
 }
 ```
+If we take a look at [03-8-compilevslink.html](https://github.com/zafarali/learning-angular/blob/master/03-8-compilevslink.html), we see the log executes the `controller` and the `compile`'s `pre` and `post` but not the link. Trying different combinations it seems that if you have a `compile`, you cannot have a `link` but you can get the effect of having a `compile` and `link` by setting a `pre` and `post` function to the `compile` function

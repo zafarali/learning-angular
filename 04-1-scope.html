@@ -9,7 +9,6 @@
 	app.controller('Ctrl', function($scope){
 		$scope.name="chineese fried rice"
 	});
-
 	//here we show two methods of setting data to an
 	//isolate scope
 	app.directive('drink', function(){
@@ -24,7 +23,6 @@
 			}
 		}
 	});
-
 	app.directive('dish', function(){
 		return {
 			scope: {
@@ -35,7 +33,6 @@
 			template: '<div>{{name}}</div>'
 		};
 	});
-
 	</script>
 </head>
 <body>

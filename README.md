@@ -192,4 +192,14 @@ return {
 	link: function(scope, instanceElement, instanceAttrs, controller){}
 }
 ```
-If we take a look at [03-8-compilevslink.html](https://github.com/zafarali/learning-angular/blob/master/03-8-compilevslink.html), we see the log executes the `controller` and the `compile`'s `pre` and `post` but not the link. Trying different combinations it seems that if you have a `compile`, you cannot have a `link` but you can get the effect of having a `compile` and `link` by setting a `pre` and `post` function to the `compile` function
+If we take a look at [03-8-compilevslink.html](https://github.com/zafarali/learning-angular/blob/master/03-8-compilevslink.html), we see the log executes the `controller` and the `compile`'s `pre` and `post` but not the link. Trying different combinations it seems that if you have a `compile`, you cannot have a `link` but you can get the effect of having a `compile` and `link` by setting a `pre` and `post` function to the `compile` function.
+
+###04-Scopes
+####Isolate Scope
+We can demonstrate a simple way to create an isolate scope for each directive we create as shown [04-0-scope.html](https://github.com/zafarali/learning-angular/blob/master/04-0-scope.html) 
+##### `@`
+We demonstrate two methods of using attributes to store data into the directives isolate scope in [04-1-scope.html](https://github.com/zafarali/learning-angular/blob/master/04-1-scope.html) 
+##### `=`
+The `@` operator will expect a string to bind the information we want to pass, however, the `=` will expect an object, this allows us to set up a two way binding between the parent scope and our directive scope. [04-2-scope.html](https://github.com/zafarali/learning-angular/blob/master/04-2-scope.html) demonstrates how updating the directive scope updates the parent. Note that in our attribute we are now passing objects and not strings.
+##### `&`
+The `&` operator will evaluate an expression that you pass to it. (WORK IN PROGRESS NOT YET FIGURED OUT HOW THIS WORKS)

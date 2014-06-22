@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>scope</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.11/angular.min.js"></script>
+
+	<script>
+	var app = angular.module('foodApp',[]);
+	app.controller('Ctrl', function($scope){
+		$scope.name="chineese fried rice"
+	});
+
+	//here we show two methods of setting data to an
+	//isolate scope
+	app.directive('drink', function(){
+		return {
+			restrict:"E",
+			scope:{},
+			template:'<div>{{flavor}}</div>',
+			link:function(scope, elem, attrs){
+				//gets the flavor='' and sets it to
+				//the scope
+				scope.flavor = attrs.flavor;
+			}
+		}
+	});
+
+	app.directive('dish', function(){
+		return {
+			scope: {
+				name:"@"
+				//this is the same as creating a link function above.
+			}, 
+			restrict: 'E', 
+			template: '<div>{{name}}</div>'
+		};
+	});
+
+	</script>
+</head>
+<body>
+<div ng-app="foodApp" ng-controller='Ctrl'>
+<drink flavor="coke"></drink>
+<drink flavor="sprite"></drink>
+<dish name="butter chicken"></dish>
+<dish name="phav baji"></dish>
+<!--We see here that we get 'name' from the parent scope-->
+<dish name="{{name}}"></dish>
+</div>
+</body>
+</html>

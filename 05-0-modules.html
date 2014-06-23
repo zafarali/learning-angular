@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Modules</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.11/angular.min.js"></script>
+	<script>
+										//myApp depends on ShoppingModule
+	var myApp = angular.module('myApp', ['ShoppingModule']);
+
+						//here we inject the 'Items' factory into our controller
+	myApp.controller('ShoppingController',['$scope','Items', function($scope,Items){
+		this.items = Items.query();
+	}]);
+
+
+	//here our ShoppingModule contains only one factory and one directive.
+	angular.module('ShoppingModule', [])
+		.factory('Items', function(){
+			var query = function(){
+				//collect data from the server
+				return [
+				{product:'Mobile Phone', price:2.50},
+				{product:'Laptop', price:5.00},
+				{product:'Book', price:7.50}
+				];
+			};
+			return {query:query};
+		})
+		.directive('product', function(){
+			return {
+				restrict:'E',
+				scope:{product:'@', price:'@'},
+				template:'<span>{{product}} costs {{price | currency}}</span>'
+			}
+		})
+	</script>
+</head>
+<body>
+<div ng-app="myApp" ng-controller='ShoppingController as shop'>
+<div ng-repeat='item in shop.items'>
+
+<!--This product directive comes from the Shopping Module-->
+<product product="{{item.product}}" price="{{item.price}}"></product>
+</div>
+</body>
+</html>

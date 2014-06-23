@@ -8,7 +8,7 @@ Take a look at the Javascript for the real magic-->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.11/angular.min.js"></script>
 <script>
 							//here we state that 'finance' is a dependancy
-angular.module('invoice-srv-demo', ['finance'])
+angular.module('invoice-srv-demo', ['finances'])
 				//here we create a 'currencyConverter' and pass
 				//it into the constructor for InvoiceController
 	.controller('InvoiceController', ['currencyConverter', function(currencyConverter){

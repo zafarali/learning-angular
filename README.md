@@ -230,7 +230,7 @@ Hello Jane Doe! You are from Canada`. This demonstrates the point.
 * Broadcasting and Emmiting
 `$emit(name, args)` will allow an event to be executed in current and parent scopes. `$broadcast(name,args)` will allow an event to be executed in current and child scopes.
 This will be demonstrated in future pages but can be seen very nicely on this page [Scope Events Propagation](https://docs.angularjs.org/guide/scope#scope-events-propagation).
-* `Controller as` Syntax refers to the following:
+* `Controller as` Syntax allows us to refer to the Controller by an *alias*:
 ```html
 <script> function MyLongCtrlName(){
 	this.clickMe = function(){
@@ -275,3 +275,4 @@ myAppComponents.directives.mydirective = function(){return {/*stuff here*/}};
 app.directive(myAppComponents.directives);
 app.controller(myAppComponents.controllers);
 ```
+* When code bases become very large, we need modules. We have already seen that we have our main app in a module but we can actually create modules seperately. We have already shown this in [00-2-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-2-concepts.html) but just to drive home the point we reiterate using a directive and a factory in [05-0-modules.html](https://github.com/zafarali/learning-angular/blob/master/05-0-modules.html).

@@ -195,6 +195,7 @@ return {
 If we take a look at [03-8-compilevslink.html](https://github.com/zafarali/learning-angular/blob/master/03-8-compilevslink.html), we see the log executes the `controller` and the `compile`'s `pre` and `post` but not the link. Trying different combinations it seems that if you have a `compile`, you cannot have a `link` but you can get the effect of having a `compile` and `link` by setting a `pre` and `post` function to the `compile` function.
 
 ###04-Scopes
+Scopes can be nested. These nested scopes can either be *child scopes* (which inherits properties from its parents) or *isolate scopes* (which doesn't inherit anything). Everything that we try to evaluate for example `{{name}}` which is input via `ng-model='name'` will be held on the *scope*. Thus we can think of scopes as the link between the controllers/directives and the view.
 ####Isolate Scope
 We can demonstrate a simple way to create an isolate scope for each directive we create as shown [04-0-scope.html](https://github.com/zafarali/learning-angular/blob/master/04-0-scope.html). When we define a directive, a property we can return is `scope`. This can be set to be `true`, `false`, or `{/*stuff inside*/}`. When we set to `false` (by default), it will use the existing scope in the directive. `true` will inherit the scope from the parent. `{}` will create an isolate scope for each directive. When you define an isolate scope there are *binding strategies* or methods of getting data into that scope. They are discussed below.
 ##### @
@@ -205,3 +206,71 @@ The `@` operator will expect a string to bind the information we want to pass, h
 The `&` operator will evaluate an expression that you pass to it. So it seems that if you are passing values between the controller and the directive you need it to be in an object, and the object must map its properties to the function. This is demonstrated in [04-3-scope.html](https://github.com/zafarali/learning-angular/blob/master/04-3-scope.html).
 ##### All together now!
 [04-4-review.html](https://github.com/zafarali/learning-angular/blob/master/04-4-review.html) encapsulates all the concepts we have discussed so far. Note that when we use `=`, we assume that the user is going to order from the same bookstore and thus we would like reflect the change in all other directives.
+####Some Comments
+* We see that there is ****one root scope*, and Angular will first look in the current scope before going up to the parent until it reaches the root scope. A demonstration follows:
+```html
+<script>
+function MyParentCtrl($scope){
+	$scope.name='John Doe'; 
+	$scope.home='Canada';
+}
+function MyChildCtrl($scope){
+	$scope.name='Jane Doe';
+}
+</script>
+<div ng-app>
+<dig ng-controller="MyParentCtrl">
+Hello {{name}}! You are from {{home}}
+<div ng-controller="MyChildCtrl">
+Hello {{name}}! You are from {{home}}
+</div></div></div>
+```
+Which will print out `Hello John Doe! You are from Canada
+Hello Jane Doe! You are from Canada`. This demonstrates the point.
+* Broadcasting and Emmiting
+`$emit(name, args)` will allow an event to be executed in current and parent scopes. `$broadcast(name,args)` will allow an event to be executed in current and child scopes.
+This will be demonstrated in future pages but can be seen very nicely on this page [Scope Events Propagation](https://docs.angularjs.org/guide/scope#scope-events-propagation).
+* `Controller as` Syntax refers to the following:
+```html
+<script> function MyLongCtrlName(){
+	this.clickMe = function(){
+		alert("You clicked me!!");
+	}
+
+	this.name = "Type your name here...";
+}</script>
+<div ng-app ng-controller="MyLongCtrlName as ctrl1">
+<input type="text" ng-model="ctrl1.name">
+{{ctrl1.name}} 
+<button ng-click="ctrl1.clickMe()">Click this button</button>
+</div>
+```
+It seems to add clarity to the code and in larger applications I think I will definietly be going to use it more often! 
+
+###05-Other Paradigms
+Some alternative ways of thinking of Controllers and different ways of organizing angular applications is also provided on the thinkster.io page. I summarize them here very briefly:
+* Think of setting up a controller like this:
+```javascript
+app.controller("Ctrl", function($scope){
+	this.hi = 'Hello';
+	this.sayHi = function(){
+		alert(this.hi);
+	}
+	return $scope.Ctrl = this;
+});```
+We can acess this now using the following html:`<div ng-click="Ctrl.sayHi()">Click</div>`. This serves to make the controller explicit and closely mimics the `Controller as` syntax above.
+* Organization. We can organize and initialize our controllers and directives like this. (however this doesn't work for filters)
+```javascript
+var app = angular.module('myApp', []);
+var myAppComponents = {};
+
+myAppComponents.controllers = {};
+myAppComponents.controllers.AppCtrl1 = function($scope){/*stuff here*/};
+myAppComponents.controllers.AppCtrl2 = function($scope){/*stuff here*/};
+
+myAppComponents.directives = {};
+myAppComponents.directives.mydirective = function(){return {/*stuff here*/}};
+
+app.directive(myAppComponents.directives);
+app.controller(myAppComponents.controllers);
+```

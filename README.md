@@ -257,7 +257,8 @@ app.controller("Ctrl", function($scope){
 		alert(this.hi);
 	}
 	return $scope.Ctrl = this;
-});```
+});
+```
 We can acess this now using the following html:`<div ng-click="Ctrl.sayHi()">Click</div>`. This serves to make the controller explicit and closely mimics the `Controller as` syntax above.
 * Organization. We can organize and initialize our controllers and directives like this. (however this doesn't work for filters)
 ```javascript

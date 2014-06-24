@@ -192,7 +192,8 @@ return {
 	link: function(scope, instanceElement, instanceAttrs, controller){}
 }
 ```
-If we take a look at [03-8-compilevslink.html](https://github.com/zafarali/learning-angular/blob/master/03-8-compilevslink.html), we see the log executes the `controller` and the `compile`'s `pre` and `post` but not the link. Trying different combinations it seems that if you have a `compile`, you cannot have a `link` but you can get the effect of having a `compile` and `link` by setting a `pre` and `post` function to the `compile` function.
+If we take a look at [03-8-compilevslink.html](https://github.com/zafarali/learning-angular/blob/master/03-8-compilevslink.html), we see the log executes the `controller` and the `compile`'s `pre` and `post` but not the link. Trying different combinations it seems that if you have a `compile`, you cannot have a `link` but you can get the effect of having a `compile` and `link` by setting a `pre` and `post` function to the `compile` function.  
+*UPDATE: I have just seen a [video](http://www.thinkster.io/angularjs/h02stsC3bY/angularjs-angular-element), it is indeed true that you cannot have a `link` function and a `compile` function. However, if we do choose to have a `compile` function, we can return (from the `compile` function) another function that will become the `link` function. Go see the website for a nice example on how this works.
 
 ###04-Scopes
 Scopes can be nested. These nested scopes can either be *child scopes* (which inherits properties from its parents) or *isolate scopes* (which doesn't inherit anything). Everything that we try to evaluate for example `{{name}}` which is input via `ng-model='name'` will be held on the *scope*. Thus we can think of scopes as the link between the controllers/directives and the view.
@@ -207,7 +208,7 @@ The `&` operator will evaluate an expression that you pass to it. So it seems th
 ##### All together now!
 [04-4-review.html](https://github.com/zafarali/learning-angular/blob/master/04-4-review.html) encapsulates all the concepts we have discussed so far. Note that when we use `=`, we assume that the user is going to order from the same bookstore and thus we would like reflect the change in all other directives.
 ####Some Comments
-* We see that there is ****one root scope*, and Angular will first look in the current scope before going up to the parent until it reaches the root scope. A demonstration follows:
+* We see that there is * **one** root scope*, and Angular will first look in the current scope before going up to the parent until it reaches the root scope. A demonstration follows:
 ```html
 <script>
 function MyParentCtrl($scope){
@@ -247,7 +248,7 @@ This will be demonstrated in future pages but can be seen very nicely on this pa
 ```
 It seems to add clarity to the code and in larger applications I think I will definietly be going to use it more often! 
 
-###05-Other Paradigms
+###05-Other Paradigms and tiny shenanigans
 Some alternative ways of thinking of Controllers and different ways of organizing angular applications is also provided on the thinkster.io page. I summarize them here very briefly:
 * Think of setting up a controller like this:
 ```javascript
@@ -276,3 +277,41 @@ app.directive(myAppComponents.directives);
 app.controller(myAppComponents.controllers);
 ```
 * When code bases become very large, we need modules. We have already seen that we have our main app in a module but we can actually create modules seperately. We have already shown this in [00-2-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-2-concepts.html) but just to drive home the point we reiterate using a directive and a factory in [05-0-modules.html](https://github.com/zafarali/learning-angular/blob/master/05-0-modules.html).
+
+* `$index`: We have already seen in past examples `$index` which holds the index of the current item in an `ng-repeat`. 
+
+####Mouse Events
+We can use AngularJS listeners along with the `$event` object to do some interesting things. The directives are named in the following convention `ng-listener` where listener can be `click`, `dbl-click`, `mouseenter` etc...  Demonstrated in [05-1-event.html](https://github.com/zafarali/learning-angular/blob/master/05-1-event.html) is how we use `$event` to log the event. We can, by the same logic, pass the `$event` into a function that deals with the event in question.
+
+#### Console logging
+Angular has a built in method to log things to the console using `$log`. The [documentation](https://docs.angularjs.org/api/ng/service/$log) summarizes everything very simply and has a nice example that demonstrates it.
+
+#### Observing the model
+`$watch(toWatch, toDo, deepWatch)` is a function that allows you to observe changes in your model. We must note that executing this operation returns another function that if executed stops the watching. For example:
+```javascript
+$scope.$watch('username', function(){
+	if($scope.username=='secret'){
+		console.log('You typed in a secret name');
+	}
+});
+```
+Now assume we have a `ng-model` input to allow the user to type in the `username`. When the value updates and evaluates to `secret` the message will be logged to the console.
+`$watch` can also watch functions to monitor their return function. The `deepWatch` parameter is a boolean. If set to true and an array of objects is passed into the `toWatch` parameter, each property of the object will be checked for changes.
+
+#### Angular Classes
+Angular automatically adds classes to some elements depending on how its being used. Here are some use cases:
+* `ng-invalid`/`ng-valid` will be on an input element depending on if the text inside has passed validation or not
+* `ng-pristine`/`ng-dirty` - if the user hasn't interacted with an input element it will have the class of `ng-pristine` and if it has been interacted with it will be `ng-dirty`.
+* `ng-binding` is given to any element that has data binding on it.
+* `ng-scope` is given to any element with a new scope.
+* `ng-class` is an attribute of an element. We pass in an object with keys that are CSS class names and values are conditions. An example follows:
+```javascript
+<div ng-class="{ showClass: whenThisIsTrue, showErrorClass: whenErrorIsTrue, neutralClass: !whenThisisTrue && !whenErrorIsTrue }">...</div>
+```
+More information found [here](https://docs.angularjs.org/guide/css-styling)
+
+#### element()
+AngularJS implements jqLite which is a light version of jQuery. Thus if you are using jQuery on your page you can treat it as a jQuery element, if not we can just use the jqLite API to interact with it. We can see which jQuery methods that jqLite supports over at [the Angular Documentation](https://docs.angularjs.org/api/ng/function/angular.element#angular-s-jqlite).  
+A few quick tip:
+* Never use `element` in controllers as controllers only have logic for views.
+* Try to avoid using jQuery. If we must there is a [video here](https://www.youtube.com/watch?v=bk-CC61zMZk) to show where and how we use it. *I haven't tried this myself yet*

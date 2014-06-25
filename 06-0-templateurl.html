@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>TemplateUrl</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.11/angular.min.js"></script>
+<script>
+	var app = angular.module('myApp', []);
+
+	app.directive('book', function(){
+		return {
+			restrict:'E',
+			scope:{title:'@'},
+			templateUrl:'partial1.html',
+			link: function(scope){
+				scope.isContentVisible = false;
+				scope.toggleContent = function(){
+					scope.isContentVisible = !scope.isContentVisible;
+				}
+			}
+		}
+	});
+</script>
+</head>
+<body>
+<div ng-app='myApp'>
+<book title="welcome"></book>
+</div>
+</body>
+</html>

@@ -207,7 +207,7 @@ The `@` operator will expect a string to bind the information we want to pass, h
 The `&` operator will evaluate an expression that you pass to it. So it seems that if you are passing values between the controller and the directive you need it to be in an object, and the object must map its properties to the function. This is demonstrated in [04-3-scope.html](https://github.com/zafarali/learning-angular/blob/master/04-3-scope.html).
 ##### All together now!
 [04-4-review.html](https://github.com/zafarali/learning-angular/blob/master/04-4-review.html) encapsulates all the concepts we have discussed so far. Note that when we use `=`, we assume that the user is going to order from the same bookstore and thus we would like reflect the change in all other directives.
-####Some Comments
+#### Some Comments
 * We see that there is * **one** root scope*, and Angular will first look in the current scope before going up to the parent until it reaches the root scope. A demonstration follows:
 ```html
 <script>
@@ -248,7 +248,7 @@ This will be demonstrated in future pages but can be seen very nicely on this pa
 ```
 It seems to add clarity to the code and in larger applications I think I will definietly be going to use it more often! 
 
-###05-Other Paradigms and tiny shenanigans
+### 05-Other Paradigms and tiny shenanigans
 Some alternative ways of thinking of Controllers and different ways of organizing angular applications is also provided on the thinkster.io page. I summarize them here very briefly:
 * Think of setting up a controller like this:
 ```javascript
@@ -280,7 +280,7 @@ app.controller(myAppComponents.controllers);
 
 * `$index`: We have already seen in past examples `$index` which holds the index of the current item in an `ng-repeat`. 
 
-####Mouse Events
+#### Mouse Events
 We can use AngularJS listeners along with the `$event` object to do some interesting things. The directives are named in the following convention `ng-listener` where listener can be `click`, `dbl-click`, `mouseenter` etc...  Demonstrated in [05-1-event.html](https://github.com/zafarali/learning-angular/blob/master/05-1-event.html) is how we use `$event` to log the event. We can, by the same logic, pass the `$event` into a function that deals with the event in question.
 
 #### Console logging
@@ -314,4 +314,8 @@ More information found [here](https://docs.angularjs.org/guide/css-styling)
 AngularJS implements jqLite which is a light version of jQuery. Thus if you are using jQuery on your page you can treat it as a jQuery element, if not we can just use the jqLite API to interact with it. We can see which jQuery methods that jqLite supports over at [the Angular Documentation](https://docs.angularjs.org/api/ng/function/angular.element#angular-s-jqlite).  
 A few quick tip:
 * Never use `element` in controllers as controllers only have logic for views.
-* Try to avoid using jQuery. If we must there is a [video here](https://www.youtube.com/watch?v=bk-CC61zMZk) to show where and how we use it. *I haven't tried this myself yet*
+* Try to avoid using jQuery. If we must there is a [video here](https://www.youtube.com/watch?v=bk-CC61zMZk) which suggests that we keep jQuery manipulation within link functions of directives. *I haven't tried this myself yet*
+
+### 06-Template
+Templates are an easy way of making your code very organized. [06-0-templateurl.html](https://github.com/zafarali/learning-angular/blob/master/06-0-templateurl.html) demonstrates how to link a partial file into the main view using the `templateUrl` property of a directive. Note that to use `templateUrl` we must have our files on a server. We can use `$templateCache` to load strings of html into the cache to mimic this effect if we do not have a seperate .html file. We then execute it using `app.run()` function.
+We can retrieve whats on `$templateCache` using the `get` function and we can insert things into it using the `put` function as seen in the example at [06-1-templatecache.html](https://github.com/zafarali/learning-angular/blob/master/06-1-templatecache.html)

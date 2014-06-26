@@ -329,4 +329,47 @@ In the config phase of our application, there are objects known as providers ava
 We call the `.when(pg,{templateUrl:templatePage,controller:pageCtrl})` function on the `$routeProvider` object. The `pg` string is what the page url will look like. the `templatePage` and `pageCtrl` are strings which are matched to the page we want to load into the view and the controller associated with that object. This is demonstrated in [07-0-ngview.html](https://github.com/zafarali/learning-angular/blob/master/07-0-ngview.html). 
 We can chain multiple `.when()` functions together (which is the common methodology adpoted by most users). There is also an `.otherwise()` function which will be the default page incase a page is not found. This is demonstrated in [07-1-routing.html](https://github.com/zafarali/learning-angular/blob/master/07-1-routing.html) 
 
-**NOTE: The information in the videos and in the book is slightly outdated. AngularJS no longer has `$routeProvider` built into it. We must inject the `ngRoute` module into our application and include a special link to the module. See 07-0-ngview.html for a complete example.**
+**NOTE: The information in the videos and in the book is slightly outdated. AngularJS no longer has `$routeProvider` built into it. We must inject the `ngRoute` module into our application and include a special link to the module. See 07-0-ngview.html for an example.**
+
+#### `$routeParams`
+The `$routeParams` object when injected into a controller lets us access the parameters from the route. We define paramaters into our `$routeProvider` object as follows:
+```javascript
+app.config(['$routeProvider', function($routeProvider){
+	$routeProvider.when('/path/:message',{
+				templateUrl:myUrl,
+				controller:myCtrl
+			});	
+}])
+```
+We use the special syntax for `:message` to indicate that this is a parameter. Thus we can load multiple urls with `#/path/X` where X is the message we wish to pass in. Once this is configured we get this parameter in the controller by using `$routeParams.message`. We must note here that in both `:parameter` and `$routeParams.parameter`, the parameter must match to get the correct information. This is demonstrated in [07-2-routeParams.html](https://github.com/zafarali/learning-angular/blob/master/07-2-routeParams.html). Using this same ideology we can pass multiple parameters as follows: `.when('/:parameter1/:parameter2/:parameter3', ...)` and access it using `$routeParams.parameter1` etc.
+
+#### Dynamic Handling
+I call this dynamic handling (sounds cooler) but basically instead of just sending the user to a string we can actually use a function to return a dynamically created URL. The key here is to use the `redirectTo` property when passing the object into the `.when()` function.  
+Imagine the scenario where you have a blog 'MyAmazingBlog' and you serve  `#/blog/postid` for a few years but  you want to start a new blog 'ExtraBlogStuff' and want to redirect people to the correct URL. We could write a function as follows:
+```javascript
+app.config(['$routeProvider', function($routeProvider){
+	$routeProvider.when('/blog/:blogname/:blogpost',{
+
+		//this returns the correct template for the blog, either MyAmazingBlog or ExtraBlogStuff, if not specified it will move onto //the next .when()
+		templateUrl:function(routeParams){
+		return routeParams.blogname+'.html'; },
+		controler:'BlogCtrl'
+	})
+	.when('/blog/:blogpost', {
+		//here we direct our older linked users to the new blog
+		redirectTo:function(routeParams){
+		return '/blog/MyAmazingBlog/'+routeParams.blogpost;
+	});
+}]);
+```
+I hope this example clearly demonstrates a use case and how to for using the '$routeParams' and '$routeProvider' objects correctly.  
+*Note: We can other parameters we can pass into the functions within route provider are as follows:
+```javascript
+function(routeParams, path, search){
+	//routeParams as we have seen above
+	//path is the path url in full
+	//search returns the queries after the path url
+	//i.e. ?query=true&message=what as a key:value object
+	return '/'; //we must return a string!
+}
+```

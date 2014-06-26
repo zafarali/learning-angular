@@ -319,3 +319,10 @@ A few quick tip:
 ### 06-Template
 Templates are an easy way of making your code very organized. [06-0-templateurl.html](https://github.com/zafarali/learning-angular/blob/master/06-0-templateurl.html) demonstrates how to link a partial file into the main view using the `templateUrl` property of a directive. Note that to use `templateUrl` we must have our files on a server. We can use `$templateCache` to load strings of html into the cache to mimic this effect if we do not have a seperate .html file. We then execute it using `app.run()` function.
 We can retrieve whats on `$templateCache` using the `get` function and we can insert things into it using the `put` function as seen in the example at [06-1-templatecache.html](https://github.com/zafarali/learning-angular/blob/master/06-1-templatecache.html)
+
+### 07-Routing
+#### The `app.config` function
+In the config phase of our application, there are objects known as providers available for us to use. They generate instances of services. This is not an important concept right now but basically the `.config` sets up what will be available to us in the controllers.
+#### `ng-view` and the `$routeProvider`
+`ng-view` is a directive that acts as a window that Angular can load views into. In the `config` function, we will inject `$routeProvider` whhere we can configure the different views and the controller associated with the view. The concept itself is difficult to grasp if you have never seen routing before but the syntax is relatively intuitive to pick up.  
+We call the `.when(pg,{templateUrl:templatePage,controller:pageCtrl})` function on the `$routeProvider` object. The `pg` string is what the page url will look like. the `templatePage` and `pageCtrl` are strings which are matched to the page we want to load into the view and the controller associated with that object. We can chain multiple `.when()` functions together (which is the common methodology adpoted by most users). There is also an `.otherwise()` function which will be the default page incase a page is not found. 

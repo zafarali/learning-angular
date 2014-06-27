@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>promises</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.11/angular.min.js"></script>
+
+<script>
+	var app = angular.module('app', []);
+
+
+	app.controller('BasicCtrl', function($scope, $q){
+		var defer = $q.defer();
+
+		defer.promise
+			.then(function(){
+				console.log('hello');
+			})
+			.then(function(){
+				console.log('world');
+			});
+
+			defer.resolve();
+	});
+	
+</script>
+</head>
+<body ng-app='app'>
+<div ng-controller="BasicCtrl">
+</div>
+</body>
+</html>

@@ -363,7 +363,7 @@ app.config(['$routeProvider', function($routeProvider){
 }]);
 ```
 I hope this example clearly demonstrates a use case and how to for using the '$routeParams' and '$routeProvider' objects correctly.  
-*Note: We can other parameters we can pass into the functions within route provider are as follows:
+*Note: We can other parameters we can pass into the functions within route provider are as follows:*
 ```javascript
 function(routeParams, path, search){
 	//routeParams as we have seen above
@@ -373,3 +373,7 @@ function(routeParams, path, search){
 	return '/'; //we must return a string!
 }
 ```
+#### Promises
+Promises are a way of executing a chain of functions. Some people say it avoids the bracket hell that occurs by passing in functions into functions.
+Angular comes with a promise library called `$q`. The key thing to remember is that we will deal with a `defer` object which we can pass in a sequence of functions to *(making some promises)* and then call the `resolve()` function to execute them.  
+In [07-3-promises.html](https://github.com/zafarali/learning-angular/blob/master/07-3-promises.html) we demonstrate basic functionality of the promise objects and a slightly more complex version using the passing arguments.

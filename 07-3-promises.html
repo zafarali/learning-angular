@@ -10,7 +10,9 @@
 
 	app.controller('BasicCtrl', function($scope, $q){
 		var defer = $q.defer();
+		//we create a defer object
 
+		//we promise a few functions using .then()
 		defer.promise
 			.then(function(){
 				console.log('hello');
@@ -19,9 +21,30 @@
 				console.log('world');
 			});
 
-			defer.resolve();
+		//we then resolve the promises using .resolve()
+		defer.resolve();
+
+
+
+		var defer2 = $q.defer();
+
+		//promise a few functions
+		defer2.promise
+			.then(function(name){
+				//this function processed the name
+				return name.split('').reverse().join('');
+				//what is returned here will be passed to the next promise
+			})
+			.then(function(processedName){
+				//this function alerts the user
+				alert('Your name reversed is '+processedName);
+			});
+
+		//here we pass in the first parameter (i.e the persons name)
+		defer2.resolve('John Snow');
+
+
 	});
-	
 </script>
 </head>
 <body ng-app='app'>

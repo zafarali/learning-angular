@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ng-view</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.11/angular.min.js"></script>
+	<script src="https://code.angularjs.org/1.3.0-beta.11/angular-route.min.js"></script>
+<script>
+	var app = angular.module('app', ['ngRoute']);
+
+	app.config(['$routeProvider', function($routeProvider){
+			$routeProvider.when('/',{
+				template:'<h3>This will never show up!</h3>',
+				controller:'BasicCtrl',
+				resolve:{
+					//this will never load and will throw a $routeChangeError
+					loadHome:basicCtrl.loadHome
+				}
+			})
+			.when('/sup',{
+				template: '<h3>Sup World!</h3>',
+				controller:'BasicCtrl',
+				resolve:{
+					//this loads fine.
+					loadSup : basicCtrl.loadSup
+				}
+			});
+		}]);
+
+	var basicCtrl = app.controller('BasicCtrl', function($scope){
+		$scope.dt = {title:'This application is very useful'};
+	});
+
+	basicCtrl.loadSup = function($q, $timeout){
+		var defer = $q.defer();
+		$timeout(function(){
+			//resolve the promise
+			defer.resolve('resolved');
+		}, 500);
+		return defer.promise;
+	}
+
+	basicCtrl.loadHome = function($q, $timeout){
+		var defer = $q.defer();
+		$timeout(function(){
+			//reject the promise
+			defer.reject('rejected!');
+		}, 500);
+		return defer.promise;
+	}
+
+	//The AppCtrl is defined to monitor the $routeChangeError
+	//and trigger a message if something occurs
+	app.controller('AppCtrl', function($rootScope){
+		$rootScope.$on('$routeChangeError', 
+
+			//these 4 arguments are optional.
+			function(event,current,previous,rejection){
+			console.log('Failed to change the route!');
+			console.log(event);//logs the event i.e $routeChangeError
+			console.log(current); //log what view we are trying to change into
+			console.log(previous); //logs what view we previously had
+			console.log(rejection); //logs the rejection message
+		})
+	})
+</script>
+</head>
+<!--Here we initiate an overall AppCtrl-->
+<body ng-app='app' ng-controller="AppCtrl">
+<a href="#">Home</a> | <a href="#/sup">Ask me whats up</a><br />
+<ng-view></ng-view>
+</body>
+</html>

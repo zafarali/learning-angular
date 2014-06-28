@@ -374,6 +374,33 @@ function(routeParams, path, search){
 }
 ```
 #### Promises
-Promises are a way of executing a chain of functions. Some people say it avoids the bracket hell that occurs by passing in functions into functions.
+Promises are a way of executing a chain of functions. Some people say it avoids the bracket hell that occurs by passing in functions into functions. (Other benefits include: Error Handling in addition to clearer code)
 Angular comes with a promise library called `$q`. The key thing to remember is that we will deal with a `defer` object which we can pass in a sequence of functions to *(making some promises)* and then call the `resolve()` function to execute them.  
-In [07-3-promises.html](https://github.com/zafarali/learning-angular/blob/master/07-3-promises.html) we demonstrate basic functionality of the promise objects and a slightly more complex version using the passing arguments.
+In [07-3-promises.html](https://github.com/zafarali/learning-angular/blob/master/07-3-promises.html) we demonstrate basic functionality of the promise objects and a slightly more complex version using the passing arguments. There is also a way to handle errors, this is demonstrated in the codeblock below:
+```javascript
+defer.promise
+	.then(function(name){
+		return name.split('').reverse().join('');
+	})
+	.then(function(reversedName){
+		//do some more processing
+		return processedName;
+	})
+	.then(function(display){
+		console.log(display);
+	}, function(error){
+		//handling the error in any of the prior steps
+	});
+```
+
+#### Resolve property for $routeProvider
+In addition to passing `templateUrl` and `controller` to the second object parameter of the `.when()` function, we can pass in `resolve` which is a list of promises that need to be resolved before the controller initiates. This allows us to load all necessary data before loading the view. Demonstrated by [this commit](https://github.com/zafarali/learning-angular/commit/2192e8cecc2a39386b9954ff165aaabc17771a79), I reiterate the experiment for clarity:
+1. **URL: #/** This template will never load. This is because our promise is never resolved!
+2. **URL: #/sup** This template loads instantaneously because we resolve the promise and then return it.
+3. **URL: #/bye** This template loads after 3 seconds. This is because we use `$timeout` (which is a wrapper for `setTimeout()`) to `resolve()` the promise after 3 seconds.
+
+This [video](http://www.thinkster.io/angularjs/6cmY50Dsyf/angularjs-resolve-conventions) demonstrates some conventions used when we use resolve properties in `$routeProvider`. Just to reiterate, all the functions we pass into the resolve properties are added to the Controllers as properties themselves. The video also points out that once the view loads, we can access the result of the resolve promises by using `$route.locals.nameOfResolvePromise`.
+
+#### Handling `$resolvehangeError`s
+*What happens if your promises don't resolve and instead throw errors?*  
+Our application would never load and nothing would show up no matter what we try to do. In this case we set up another default controller to handle this situation. A demonstration is at [07-5-ChangeError.html](https://github.com/zafarali/learning-angular/blob/master/07-5-ChangeError.html) make sure to read the comments to understand what is happening!

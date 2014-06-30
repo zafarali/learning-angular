@@ -394,13 +394,24 @@ defer.promise
 ```
 
 #### Resolve property for $routeProvider
-In addition to passing `templateUrl` and `controller` to the second object parameter of the `.when()` function, we can pass in `resolve` which is a list of promises that need to be resolved before the controller initiates. This allows us to load all necessary data before loading the view. Demonstrated by [this commit](https://github.com/zafarali/learning-angular/commit/2192e8cecc2a39386b9954ff165aaabc17771a79), I reiterate the experiment for clarity:
-1. **URL: #/** This template will never load. This is because our promise is never resolved!
-2. **URL: #/sup** This template loads instantaneously because we resolve the promise and then return it.
+In addition to passing `templateUrl` and `controller` to the second object parameter of the `.when()` function, we can pass in `resolve` which is a list of promises that need to be resolved before the controller initiates. This allows us to load all necessary data before loading the view. Demonstrated by [this commit](https://github.com/zafarali/learning-angular/commit/2192e8cecc2a39386b9954ff165aaabc17771a79), I reiterate the experiment for clarity:  
+1. **URL: #/** This template will never load. This is because our promise is never resolved!  
+2. **URL: #/sup** This template loads instantaneously because we resolve the promise and then return it.  
 3. **URL: #/bye** This template loads after 3 seconds. This is because we use `$timeout` (which is a wrapper for `setTimeout()`) to `resolve()` the promise after 3 seconds.
 
 This [video](http://www.thinkster.io/angularjs/6cmY50Dsyf/angularjs-resolve-conventions) demonstrates some conventions used when we use resolve properties in `$routeProvider`. Just to reiterate, all the functions we pass into the resolve properties are added to the Controllers as properties themselves. The video also points out that once the view loads, we can access the result of the resolve promises by using `$route.locals.nameOfResolvePromise`.
 
-#### Handling `$resolvehangeError`s
+#### Handling `$resolveChangeError`s
 *What happens if your promises don't resolve and instead throw errors?*  
-Our application would never load and nothing would show up no matter what we try to do. In this case we set up another default controller to handle this situation. A demonstration is at [07-5-ChangeError.html](https://github.com/zafarali/learning-angular/blob/master/07-5-ChangeError.html) make sure to read the comments to understand what is happening!
+Our application would never load and nothing would show up no matter what we try to do. In this case we set up another default controller to handle this situation. A demonstration is at [07-5-ChangeError.html](https://github.com/zafarali/learning-angular/blob/master/07-5-ChangeError.html) make sure to read the comments to understand what is happening!  
+A [video](http://www.thinkster.io/angularjs/8u6fK7qWYv/angularjs-directive-for-route-handling) suggests that we create a directive to handle the `$routeChangeError`. I leave you to click over and read through how its done.
+
+#### `$location`
+`$location` is a wrapper around the `window.location` method/object. It provides some handy getters and setters and can use HTML5 methods when available or default to non-HTML5 methods. Since it is provided by AngularJS it is aware of when things change (We do not need to `watch()` it.)
+Here are some methods:  
+1. `absUrl()` returns the whole URL  including the paths  
+2. `host()` returns the host (i.e www.host.com)  
+3. `path()` returns the path the app is currently at.  
+4. `search()` allows us to get a key value pair for the queries passed in.  
+5. `url()` returns the path and the query parameters.  
+*Note that `path()`, `search()` and `url()` are also setters for the same property.

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Events</title>
+	<style>.panel{background-color:gray; display:inline-block;margin:1px; min-width:50px; min-height:50px}</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.11/angular.min.js"></script>
+	<script>
+	var myApp = angular.module('myApp', []);
+	myApp.controller('MyCtrl', function($scope){
+		$scope.e = 'nothing up  yet';
+	});
+
+	</script>
+</head>
+<body>
+<div ng-app='myApp' ng-controller='MyCtrl'>
+<div class="panel" ng-click="e=$event">Click to see event: {{e.clientX}}</div>
+<div class="panel" ng-dblclick="e=$event">Double Click to see event: {{e.clientX}}</div>
+<div class="panel" ng-mousemove="e=$event">Movemouse over here to see event: {{e.clientX}}</div>
+<div class="panel" ng-mousedown="e=$event">Mouse down to see event: {{e.clientX}}</div>
+<div class="panel" ng-mouseenter="e=$event">Mouse enter to see event: {{e.clientX}}</div>
+</div>
+</body>
+</html>

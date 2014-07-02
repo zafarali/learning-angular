@@ -414,4 +414,21 @@ Here are some methods:
 3. `path()` returns the path the app is currently at.  
 4. `search()` allows us to get a key value pair for the queries passed in.  
 5. `url()` returns the path and the query parameters.  
-*Note that `path()`, `search()` and `url()` are also setters for the same property.
+*Note that `path()`, `search()` and `url()` are also setters for the same property.*  
+
+- [ ] To Do The Route Life Cycle
+
+### Interesting things to know
+Here are a few things I felt like covering to give us a nice break from the very serious factory, provider, module, routing stuff we have been getting into
+#### `$resource`
+*This has a dependancy ngResource*
+The `$resource` is a wrapper for using an API.  We create a resource by calling `$resource(url, parameters, actions, options)`  
+1. **url** contains a parameterized version of the URL we are going to interact with. For example it can be: `http://www.myexample.com/data.json` or `http://www.myexample.com/api/user/:id`.  
+2. **parameters** sets default parameters that we are going to pass into the object. From what I see the most likely use case is with the `@` parameter. This will be elaborated later.  
+3. **options** Will be discussed later  
+4. **actions** will be discussed later  
+This makes our code easier to deal with by only dealing with objects and not with repeated instances of urls. We must note that `$resource` depends on `$http` which will be discussed shortly.
+
+#### `ngAnimate`
+Animations in AngularJS require us to inject a special module known as `ngAnimate` which adds special classes to elements that can be animated in special ways. In [08-0-ngAnimate.html](https://github.com/zafarali/learning-angular/blob/master/08-0-ngAnimate.html) we see three separate cases of how these are done using CSS.
+The key thing to remember here is that while the animation is being executed (i.e the transitions and the animations), the class of the element will have `.ng-enter-active`.

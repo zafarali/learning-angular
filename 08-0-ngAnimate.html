@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ngAnimate</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.11/angular.min.js"></script>
+	<script src="https://code.angularjs.org/1.3.0-beta.11/angular-animate.min.js"></script>
+	<script>
+	var app = angular.module('myApp', ['ngAnimate']);
+
+	app.factory('phonebook', function(){
+		return {
+			people:[
+			{name:'Jane', number:'5144440912'},
+			{name:'John', number:'5144429101'},
+			{name:'Bob', number:'1230091111'},
+			{name:'Alice', number:'1233011122'}]
+		}
+	});
+
+	app.controller('PhoneCtrl', ['phonebook','$scope', function(phonebook, $scope){
+		$scope.phonebook = phonebook;
+		$scope.data = {searchQuery:'', checked:true, css:'special'};
+	}]);
+	</script>
+	<style>
+	/*Notification animations*/
+	.notification{
+		padding:10px;
+		border:1px solid black;
+		background-color: yellow;
+	}
+	.notification{
+		-webkit-transition:all linear 0.5s;
+		transition: all linear 0.5s;
+	}
+	.animate-show{opacity: 1;}
+	.animate-show.ng-hide-add.ng-hide-add-active,
+	.animate-show.ng-hide-remove.ng-hide-remove-active{
+		-wekit-transition:all linear 0.5s;
+		transition:all linear 0.5s;
+	}
+	.animate-show.ng-hide{opacity: 0;}
+
+	/*repeater animations*/
+	.repeat-element{line-height: 20px;}
+	.repeat-element.ng-move,
+	.repeat-element.ng-enter,
+	.repeat-element.ng-leave{
+		-webkit-transition:all linear 0.5s;
+		transition: all linear 0.5s;
+	}
+	.repeat-element.ng-leave.ng-leave-active,
+	.repeat-element.ng-move,
+	.repeat-element.ng-enter{
+		opacity: 0;
+		max-height: 0;
+	}
+	.repeat-element.ng-leave,
+	.repeat-element.ng-move.ng-move-active,
+	.repeat-element.ng-enter.ng-enter-active{
+		opacity:1;
+		max-height: 20px;
+	}
+	/*just to demonstrate when this class is activated*/
+	.repeat-element.ng-enter.ng-enter-active{
+		color:red;
+		font-size: 2em;
+	}
+
+	/*select animations at the bottom of the page*/
+	.special-add, .special-remove{
+		-webkit-transition:all linear 0.5s;
+		transition:all linear 0.5s;
+	}
+	.special, .special-add.special-add-active{
+		color:red;
+		font-size: 3em;
+		-webkit-transform:rotate(-180deg);
+		transform:rotate(-180deg);
+	}
+	.special-remove.special-remove-active{
+		font-size: 1em;
+		color:black;
+		-webkit-transform:rotate(180deg);
+		transform:rotate(180deg);
+	}
+	</style>
+</head>
+<body ng-app="myApp">
+This page demonstrates ngAnimate.
+<br/>
+
+<div ng-controller="PhoneCtrl">
+<input type="checkbox" ng-model="data.checked">Make visible
+<!--CASE 1-->
+<div ng-show="data.checked" class="notification animate-show">This is shown if true</div>
+<br />
+<div id="repeater">
+<input type="text" ng-model="data.searchQuery"><br />
+<!--CASE 2-->
+<div ng-repeat="person in phonebook.people | filter:data.searchQuery" class="repeat-element">
+{{person.name}} | {{person.number}}
+</div></div>
+<br />
+
+<!--CASE 3-->
+<div id="select-animations">
+<button ng-click="data.cssvar='special'">Make Special</button> <button ng-click="data.cssvar=''">Clear Special</button><br />
+<span ng-class="data.cssvar">Animate me!</span>
+</div>
+</div>
+</body>
+</html>

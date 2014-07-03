@@ -229,8 +229,7 @@ Hello {{name}}! You are from {{home}}
 Which will print out `Hello John Doe! You are from Canada
 Hello Jane Doe! You are from Canada`. This demonstrates the point.
 * Broadcasting and Emmiting
-`$emit(name, args)` will allow an event to be executed in current and parent scopes. `$broadcast(name,args)` will allow an event to be executed in current and child scopes.
-This will be demonstrated in future pages but can be seen very nicely on this page [Scope Events Propagation](https://docs.angularjs.org/guide/scope#scope-events-propagation).
+`$emit(name, args)` will allow an event to be executed in current and parent scopes. `$broadcast(name,args)` will allow an event to be executed in current and child scopes. This will be demonstrated in future pages but can be seen very nicely on this page [Scope Events Propagation](https://docs.angularjs.org/guide/scope#scope-events-propagation). [See bottom topic on this for more information](#Scope-Communcation)
 * `Controller as` Syntax allows us to refer to the Controller by an *alias*:
 ```html
 <script> function MyLongCtrlName(){
@@ -418,8 +417,40 @@ Here are some methods:
 
 - [ ] To Do The Route Life Cycle
 
-### Interesting things to know
-Here are a few things I felt like covering to give us a nice break from the very serious factory, provider, module, routing stuff we have been getting into
+### Server Communication
+Anyone who has worked with servers and javascript would have come accross AJAX and its method of fetching data from the server using `XMLHttpRequest()`. AngularJS makes it easy to deal with these kind of objects by wrapping them as example one shows.
+#### `$http`
+```javascript
+$http.get('api/user/', {params:{id:'5'}}
+		).success(function(data,status,headers,config){
+			//continue the application
+		}).error(function(data,status,headers,config){
+			//deal with the error here
+		});
+```
+As you can see this nicely wraps around a repetitive feature that we need often. 
+All return types of the above are promise objects. The `$http` object is called with a `config` object which follows this format:
+```javascript
+var config = {
+	method: "GET" || "POST", //...
+	url: "urlOfTarget",
+	params: [{key1:'value1', key2:'value2'}], //this turns into ?key1=value1&key2=value2
+	data: 'string'|| object, //..to be placed on the server
+	headers: object, //to be defined later
+	cache: boolean, //caching the data
+	timeout:int //how long to wait before expiring
+}
+```
+There are some other config properties as well which I am refraining from discussing to keep things simple
+Here are some other (shorthand) methods that `$http` provides us with:  
+1. `$http.get(url, [config])`  
+2. `$http.post(url, data, [config])`  
+3. `$http.put(url, data, [config])`  
+4. `$http.delete(url, [config])`  
+5. `$http.jsonp(url, [config])`  
+6. `$http.head(url, [config])`  
+The `$resource` object is a another method often used to interact with an API. This is explored in the next section.
+
 #### `$resource`
 *This has a dependancy ngResource*
 The `$resource` is a wrapper for using an API.  We create a resource by calling `$resource(url, parameters, actions, options)`  
@@ -470,7 +501,6 @@ The setter `.$save()` is called with some data to be posted and has the same suc
 A full example of this would be:
 `Notes.$save({noteId:2, author:'Camillo'}, "This is an amazing note wow", successCallback, errorCallback)`
 
-
 1. **url** contains a parameterized version of the URL we are going to interact with. For example it can be: `http://www.myexample.com/data.json` or `http://www.myexample.com/api/user/:id`.  
 2. **parameters** sets default parameters that we are going to pass into the object. From what I see the most likely use case is with the `@` parameter. This will be elaborated later.  
 3. **options** Will be discussed later  
@@ -486,7 +516,28 @@ We can now call `Notes.update({id:id}, data);` after injecting the `Notes` facto
 This makes our code easier to deal with by only dealing with objects and not with repeated instances of urls. We must note that `$resource` depends on `$http` which will be discussed shortly.
 - [ ] Make examples
 
+### Interesting things to know
+Here are a few things I felt like covering to give us a nice break from the very serious factory, provider, module, routing stuff we have been getting into
 #### `ngAnimate`
 Animations in AngularJS require us to inject a special module known as `ngAnimate` which adds special classes to elements that can be animated in special ways. In [08-0-ngAnimate.html](https://github.com/zafarali/learning-angular/blob/master/08-0-ngAnimate.html) we see three separate cases of how these are done using CSS.
 The key thing to remember here is that while the animation is being executed (i.e the transitions and the animations), the class of the element will have `.ng-enter-active`.
 
+#### Scope Communication
+We have seen previously that there are ways to watch for events/changes using `$watch` but here we introduce another way known as `$on`. This monitors the scope for an event of a name. For example:
+```javascript
+scope.$on('myEventName', function(event, param1, param2, ...){
+	console.log(param1+' '+param2);
+	scope.doEvent(param1,param2);
+});
+
+//The above can be invoked by:
+scope.$emit('myEventName', 'Hello', 'World');
+//or
+scope.$broadcast('myEventName', 'Bye', 'World');
+```
+What is the difference between `$emit` and `$broadcast`? As mentioned previously `$emit` propogates the event upwards and all controllers listening for `myEventName` in the parent scopes will be alerted. `$broadcast` does the opposite and propogates the event downwards. Note that both these events will also execute in their own scopes.
+
+#### Providers and Injectors (advanced)
+- [ ] To be completed:
+#### Providers
+#### Injectors

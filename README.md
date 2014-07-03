@@ -423,12 +423,70 @@ Here are a few things I felt like covering to give us a nice break from the very
 #### `$resource`
 *This has a dependancy ngResource*
 The `$resource` is a wrapper for using an API.  We create a resource by calling `$resource(url, parameters, actions, options)`  
+```javascript
+var UserProfile = $resource('/api/user/:userID', 
+//get the id from a passed in string.
+{userID:'@id'},
+{
+	//defining a custom action
+	getBalance: {method:'GET',params:{showBal:true}}
+});
+```
+Manipulating the object is as easy as manipulating any user defined object:
+```javascript
+var users = UserProfile.query(function(){
+	//this does: 
+	//GET: /api/user/
+	//the server returns:
+	//[{id:1, name:'Jane'}, {id:2, name:'John'}];
+
+	//we can access specific instaces of the cards as we refer to arrays. I.e users[0], users[1] ...
+	var user = users[0]
+	user.name = "Doe" //overrides the object property 'name' to Doe.
+	user.$save();
+	//this does:
+	//POST: /api/user/1 {id:1, name:'Doe'},
+	//server returns the above.
+
+	user.$getBalance();
+	//does a GET: /user/1?showBal=true
+	
+});
+```
+We can even create new instances as we do with regular objects:
+```javascript
+var newUser = new UserProfile({name:"James Bond"});
+newUser.$save();
+```
+The functions/methods available to us without any further modification are:  
+1. `.get()` which does a GET request.  
+2. `.$save()` which does a POST request.  
+3. `.query()` which does a GET request and returns an array.  
+4. `.$remove()` which does a DELETE request.  
+5. `.$delete()` which does a DELETE request.  
+The getters and the deleters, `.get()`, `.query()`, `.$remove()` and `.$delete()` can be passed a callback function with `(value,headers)` and the error callback is passed with `httpResponse` argument.   
+A full example of this would be `UserProfile.get({id:1}, function(data){/*do success stuff*/}, function(response){/*handle error*/}.  
+The setter `.$save()` is called with some data to be posted and has the same success/error callback pattern.   
+A full example of this would be:
+`Notes.$save({noteId:2, author:'Camillo'}, "This is an amazing note wow", successCallback, errorCallback)`
+
+
 1. **url** contains a parameterized version of the URL we are going to interact with. For example it can be: `http://www.myexample.com/data.json` or `http://www.myexample.com/api/user/:id`.  
 2. **parameters** sets default parameters that we are going to pass into the object. From what I see the most likely use case is with the `@` parameter. This will be elaborated later.  
 3. **options** Will be discussed later  
-4. **actions** will be discussed later  
+4. **actions** will extend the functionality of the `$resource` object. This was demonstrated above but just for clarity here's another example: 
+```javascript
+app.factory('Notes', ['$resource', function($resource){
+	return $resource('api/notes/:id', null, {'update':{method:'PUT'}
+	});
+}]);
+Notes.update({id:'2'}, "This is amazing!");
+```
+We can now call `Notes.update({id:id}, data);` after injecting the `Notes` factory into our controller.  
 This makes our code easier to deal with by only dealing with objects and not with repeated instances of urls. We must note that `$resource` depends on `$http` which will be discussed shortly.
+- [ ] Make examples
 
 #### `ngAnimate`
 Animations in AngularJS require us to inject a special module known as `ngAnimate` which adds special classes to elements that can be animated in special ways. In [08-0-ngAnimate.html](https://github.com/zafarali/learning-angular/blob/master/08-0-ngAnimate.html) we see three separate cases of how these are done using CSS.
 The key thing to remember here is that while the animation is being executed (i.e the transitions and the animations), the class of the element will have `.ng-enter-active`.
+

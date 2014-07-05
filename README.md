@@ -1,10 +1,10 @@
 Learning AngularJS
 ================
+*I notices how untidy the main folder has become, however I am not going to move any of the files anywhere due to the fact that all the links are now fixed in this README. If there is another tutorial that comes up then I will create a separate folder with the code and README for that curriculum - **Thanks for visiting!** *    
 So I've been meaning to learn AngularJS for some time now and I've watched a few videos here and there but kept on dropping and never building anything concrete. This repo will help me track my progress through two curriculums I've found on thinkster.io and codeschool.com:  
 
 1. [A Better Way to Learn AngularJS](http://www.thinkster.io/angularjs/GtaQ0oMGIl/a-better-way-to-learn-angularjs)  
 2. [Shaping up with AngularJS](http://campus.codeschool.com/courses/shaping-up-with-angular-js/intro)  
-3. [AngularJS Tutorial: Learn to build Modern Webapps](http://www.thinkster.io/angularjs/r1gRPYp4kM/angularjs-tutorial-learn-to-build-modern-webapps)  
 
 This repository will also include code from other sources which I will cite in the comments and below when I find them. There are also basic code example as alternative to demos shown in the videos so that we can see more than one example to be able to accurately wrap ones head around.
 

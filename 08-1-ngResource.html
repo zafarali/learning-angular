@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ngResource</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.11/angular.min.js"></script>
+	<script src="https://code.angularjs.org/1.3.0-beta.11/angular-resource.min.js"></script>
+	<script>
+	var app = angular.module('citySearchAPP', ['ngResource']);
+
+/*
+Here we define the CitySearch Factory which will a $resource for cities in the vicinity.
+The first parameter we pass in is the parameterized URL with :version and :action as placeholders
+The second parameter is an object 'options' which sets the default values for each parameter
+Any parameter not mapped to a ':' value in the url becomes a query value i.e. ?
+Since its crossdomain we need to supply a callback, and angularJS handles that for us if we
+pass in JSON_CALLBACK.
+the thir parameter 'actions' object is where we are overriding the default .get() functionality
+to deal with JSONP and non-arrays.
+*/
+	app.factory('CitySearch', ['$resource', function($resource){
+		return $resource('http://api.meetup.com/:version/:action',
+		{version:'2', action:'cities', radius:'50', callback:'JSON_CALLBACK'},
+		{get:{method:'JSONP', isArray:false}});
+	}]);
+
+
+/*
+Here we have a data object on the scope which has a done and places property.
+$resource.get() returns a promise which we utilize below using the $promise property.
+By invoking the .then() function we can load data onto the scope and change done to yes.
+At this point the data will appear in the browser. All this is wrapped into an update function
+that allows us to manipulate using the search queries.
+*/
+	app.controller('citySearchCtrl', ['CitySearch', '$scope', function(CitySearch, $scope){
+		
+		$scope.results = {done:'no'};
+		$scope.search = {query:'', radius:'50'};
+
+
+		$scope.update = function(){
+
+			$scope.results.done='no';
+			var citySearchPromise = CitySearch.get(
+				{query:$scope.search.query,
+				 radius:$scope.search.radius
+			}).$promise;
+
+			citySearchPromise.then(function(response){
+				$scope.results.places = response.results;
+				$scope.results.done= 'yes';
+			});
+		};
+
+		$scope.update();
+	}]);
+
+	</script>
+</head>
+<body ng-app="citySearchAPP" ng-controller="citySearchCtrl">
+This page demonstrates ngResource.
+<br/>
+<!-- Basic Search box here -->
+Type in a place to search: <input type="text" ng-model="search.query">, Radius: <input type="number" ng-model="search.radius"><button ng-click="update()">Search</button>
+
+<!-- Displaying the data using binding and ng-repeat -->
+<h1>Done? {{results.done}}</h1>
+<div ng-repeat="place in results.places">
+<p>{{place.city}}, {{place.country | uppercase}}</p></div>
+</body>
+</html>

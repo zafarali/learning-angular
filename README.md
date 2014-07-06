@@ -514,7 +514,9 @@ Notes.update({id:'2'}, "This is amazing!");
 ```
 We can now call `Notes.update({id:id}, data);` after injecting the `Notes` factory into our controller.  
 This makes our code easier to deal with by only dealing with objects and not with repeated instances of urls. We must note that `$resource` depends on `$http` which will be discussed shortly.
-- [ ] Make examples
+
+##### Notes Regarding Cross Domain Requests
+You may or may not know that Javascript cannot make AJAX calls to a domain thats not their own. i.e. your website (assuming you don't work for twitter) cannot ping twitter to get tweets. However, there is a method around this known as padding or *JSONP*. (I found out after the video that Twitter no longer offers this API without authentication, Instead I decided to use the [Meetup API for cities](http://www.meetup.com/meetup_api/docs/2/cities/)) . In the example [08-1-ngResource.html](https://github.com/zafarali/learning-angular/blob/master/08-1-ngResource.html) I override the usual GET method of the resource object with the JSONP method which allows me to access the Meetup API and retrieve nearest cities. Note that not all websites provide a JSONP enabled API. The page is made following the tutorial from [egghead.io](https://www.youtube.com/watch?v=IRelx4-ISbs). [Meetup Cities API](http://www.meetup.com/meetup_api/docs/2/cities/). **Read the comments in 08-1-ngResource.html for in depth explanation of what is happening**  
 
 ### Interesting things to know
 Here are a few things I felt like covering to give us a nice break from the very serious factory, provider, module, routing stuff we have been getting into
@@ -538,6 +540,6 @@ scope.$broadcast('myEventName', 'Bye', 'World');
 What is the difference between `$emit` and `$broadcast`? As mentioned previously `$emit` propogates the event upwards and all controllers listening for `myEventName` in the parent scopes will be alerted. `$broadcast` does the opposite and propogates the event downwards. Note that both these events will also execute in their own scopes.
 
 #### Providers and Injectors (advanced)
-- [ ] To be completed:
-#### Providers
+- [ ] To be completed:  
+#### Providers  
 #### Injectors

@@ -172,7 +172,8 @@ template:"<div><div><span ng-transclude></span></div></div>",
 //...
 ```
 - `link:function()` executes when the directive sets up. Can be useful in setting `timeout`s, or binding `event`s to the element
-- `controller:function()` allows you to set up scope properties and create an interface for other directives to interact with.
+- `controller:function()` allows you to set up scope properties and create an interface for other directives to interact with. This is also useful if you have functions in your directive that need to be executed by only your directive.
+- `controllerAs: 'String'` allows you to use the [Controller As]() syntax in your directives. *note that now we don't bind things to `scope` we now bind it to `this`.* Refer notes above for more details on the 'controllerAs' syntax.  
 -`scope:{}` allows you to create a new scope for the element rather than inherit from the parent
 - `require:['^directives']` makes it mandatory for the current directive to be nested in the parent to ensure it functions correctly.  
 A quick gotcha to note, when you name your directive `datePicker` when declaring it, you can refer to it as `date-picker` in your HTML.
@@ -541,7 +542,14 @@ scope.$broadcast('myEventName', 'Bye', 'World');
 ```
 What is the difference between `$emit` and `$broadcast`? As mentioned previously `$emit` propogates the event upwards and all controllers listening for `myEventName` in the parent scopes will be alerted. `$broadcast` does the opposite and propogates the event downwards. Note that both these events will also execute in their own scopes.
 
-#### Providers and Injectors (advanced)
+### Forms
+*Content from this section (Forms) is based of the course [Shaping Up With AngularJS](http://campus.codeschool.com/courses/shaping-up-with-angular-js/)*  
+Remember when we discussed [Angluar Classes above](https://github.com/zafarali/learning-angular#angular-classes)? AngluarJS provides us with a couple of other nice tricks and features that make form validations easier. Let's look at each of them step by step and then do an example:  
+- `ng-submit` is an attribute of the `<form>` element that has the function will be invoked when the user clicks the 'submit' button. Alternatively this function can also be in `ng-click` of the `<button>` element.  
+- `formname.$valid` is an object available on the global scope where formname is the `name` attribute of the `<form>` element. From this we can see that AngluarJS does alot behind the scene for us and will automatically validate the form. Returns `true` or `false`.
+- Coupling the `$valid` with the Angluar Classes we can make a very interactive form! See [here for example](https://github.com/zafarali/learning-angular/blob/master/09-0-forms.html)
+
+### Providers and Injectors (advanced)
 - [ ] To be completed:  
 #### Providers  
 #### Injectors

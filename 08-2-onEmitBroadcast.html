@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>$on $emit $broadcast</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.11/angular.min.js"></script>
+
+	<script>
+	var app = angular.module('myApp', []);
+
+	app.controller('OuterController', function($scope) {
+		$scope.outer = 0;
+
+		$scope.$on('hi event', function() {
+			$scope.outer = $scope.outer + 1;
+		});
+	});
+
+	app.controller('MiddleController', function($scope) {
+		$scope.middle = 0;
+
+		$scope.$on('hi event', function() {
+			$scope.middle = $scope.middle + 1;
+		});
+	});
+
+	app.controller('InnerController', function($scope) {
+		$scope.outer = 0;
+		$scope.inner = 0;
+
+		$scope.$on('hi event', function() {
+			$scope.inner = $scope.inner + 1;
+		});
+	});
+
+	</script>
+</head>
+<body ng-app="myApp" ng-controller="OuterController">
+
+Outer: {{outer}}, Middle: {{middle}}, Inner: {{inner}} <Br />
+<p>Here middle and inner don't show up because they are not part of this scope.</p>
+<p>Clicking $broadcast/$emit in any scope also fire the event in that scope itself</p>
+<button ng-click="$broadcast('hi event')">Broadcast Downwards</button>
+<button ng-click="$emit('hi event')"> Broadcast Upwards</button>
+
+<div ng-controller="MiddleController">
+outer: {{outer}}, middle: {{middle}}, inner: {{inner}} <br />
+<p>Here outer is inherited from the parent scope, inner is not available in this scope.</p>
+
+<button ng-click="$broadcast('hi event')">Broadcast Downwards</button>
+<button ng-click="$emit('hi event')"> Broadcast Upwards</button>
+
+<div ng-controller="InnerController">
+outer: {{outer}}, middle: {{middle}}, inner: {{inner}} <Br />
+<p>Here outer, middle and inner are available as angularJS looks in the parent scopes for the property we request. But note that here we have overrident the outer property and so doesn't update, it is no longer linked to the first scope. </p>
+<button ng-click="$broadcast('hi event')">Broadcast Downwards</button>
+<button ng-click="$emit('hi event')"> Broadcast Upwards</button>
+</div>
+</div>
+</body>
+</html>

@@ -530,9 +530,9 @@ The key thing to remember here is that while the animation is being executed (i.
 #### Scope Communication
 We have seen previously that there are ways to watch for events/changes using `$watch` but here we introduce another way known as `$on`. This monitors the scope for an event of a name. For example:
 ```javascript
-scope.$on('myEventName', function(event, param1, param2, ...){
-	console.log(param1+' '+param2);
-	scope.doEvent(param1,param2);
+scope.$on('myEventName', function(event, param1, param2, ...) {
+	console.log(param1 + ' ' + param2);
+	scope.doEvent(param1, param2);
 });
 
 //The above can be invoked by:
@@ -540,7 +540,9 @@ scope.$emit('myEventName', 'Hello', 'World');
 //or
 scope.$broadcast('myEventName', 'Bye', 'World');
 ```
-What is the difference between `$emit` and `$broadcast`? As mentioned previously `$emit` propogates the event upwards and all controllers listening for `myEventName` in the parent scopes will be alerted. `$broadcast` does the opposite and propogates the event downwards. Note that both these events will also execute in their own scopes.
+What is the difference between `$emit` and `$broadcast`? As mentioned previously `$emit` propogates the event upwards and all controllers listening for `myEventName` in the parent scopes will be alerted. `$broadcast` does the opposite and propogates the event downwards. Note that both these events will also execute in their own scopes.  
+
+A new example here [08-2-onEmitBroadcast.html](https://github.com/zafarali/learning-angular/blob/master/08-2-onEmitBroadcast.html) demonstrates this. Remember that declaring a new controller automatically creates a new scope. The page is also demonstrates inherited scopes and overriding properties.
 
 ### Forms
 *Content from this section (Forms) is based of the course [Shaping Up With AngularJS](http://campus.codeschool.com/courses/shaping-up-with-angular-js/)*  

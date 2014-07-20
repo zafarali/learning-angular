@@ -1,6 +1,7 @@
 Learning AngularJS
 ================
-*I notices how untidy the main folder has become, however I am not going to move any of the files anywhere due to the fact that all the links are now fixed in this README. If there is another tutorial that comes up then I will create a separate folder with the code and README for that curriculum - **Thanks for visiting!** *    
+*I noticed how untidy the main folder has become, however I am not going to move any of the files anywhere due to the fact that all the links are now fixed in this README. If there is another tutorial that comes up then I will create a separate folder with the code and README for that curriculum - *Thanks for visiting!* *   
+
 So I've been meaning to learn AngularJS for some time now and I've watched a few videos here and there but kept on dropping and never building anything concrete. This repo will help me track my progress through two curriculums I've found on thinkster.io and codeschool.com:  
 
 1. [A Better Way to Learn AngularJS](http://www.thinkster.io/angularjs/GtaQ0oMGIl/a-better-way-to-learn-angularjs)  
@@ -30,7 +31,7 @@ AngularJS relies heavily on the MVC approach:
 There are some *buzzwords* used in AngularJS:
 - **Data Binding** is the sync of data between the model and the view 
 - **Two way Data Binding** is a feature of angular that says that everything in the document is live. Whenever the input changes the expression is automatically recacluated and the DOM is updated as well.
-- **Scope** this is where the variables and data (known as model) are stored, think of it as the traditional *scope* that allows all other components to access the data in the model.
+- **Scope** ~~this is where the variables and data (known as model) are stored, think of it as the traditional *scope* that allows all other components to access the data in the model.~~ So someone pointed out that this definition was vague. After some more reading, it turns out that the Scope is where your application will execute expressions, scopes are nested and the root scope usually doesn't contain anything in it. Without trying to complicate our lift off with definitions, think of the scope *of a controller* the place where our data is stored and 'forms the glue between the controller and the view'.  
 - **Templates** all HTML files with angular code are known as templates because angular must fill in expressions and other gadgematics.
 - **Directives** apply special behaviour to HTML elements. For example the `ng-app` attribute in our [00-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-0-concepts.html) file is linked to a directive that automatically initializes the application. When we define `ng-model` attributes to our `<input>` element, we create a directive that stores and updates the value from the `<input>` field to the *scope*.
 - **filters** format the value of an expression for display to the user. Filters are very useful and in our [00-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-0-concepts.html) file we use `currency` to format the output of the expression to resemble a bill or currency.
@@ -61,7 +62,7 @@ Found this gotcha thanks to [this video](http://www.thinkster.io/angularjs/axAQa
 		</div>
 	</div>
 ```
-If we set up our code as above, *scope inheritence* is broken Each new `ng-model` that we set up for the `message` is creating a new instance of message which means there is no longer communication between the two `message`s. To rectify this we place a `data` model on the `$scope` which has the `message` property. I like to think of this as each controller getting its own scope because recitifying the code as shown below also doesn't fix the issue and no data is shared between the two controllers.
+If we set up our code as above, *scope inheritence* is broken. Each new `ng-model` that we set up for the `message` is creating a new instance of message which means there is no longer communication between the two `message`s. To rectify this we place a `data` model on the `$scope` which has the `message` property. I like to think of this as each controller getting its own scope because recitifying the code as shown below also doesn't fix the issue and no data is shared between the two controllers.
 ```html
 	<!--Script remains the same-->
 	<div ng-app="">

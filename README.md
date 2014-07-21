@@ -32,7 +32,7 @@ AngularJS relies heavily on the MVC approach:
 There are some *buzzwords* used in AngularJS:
 - **Data Binding** is the sync of data between the model and the view 
 - **Two way Data Binding** is a feature of angular that says that everything in the document is live. Whenever the input changes the expression is automatically recacluated and the DOM is updated as well.
-- **Scope** ~~this is where the variables and data (known as model) are stored, think of it as the traditional *scope* that allows all other components to access the data in the model.~~ So someone pointed out that this definition was vague. After some more reading, it turns out that the Scope is where your application will execute expressions, scopes are nested and the root scope usually doesn't contain anything in it. Without trying to complicate our lift off with definitions, think of the scope *of a controller* the place where our data is stored and 'forms the glue between the controller and the view'.  
+- **Scope** ~~this is where the variables and data (known as model) are stored, think of it as the traditional *scope* that allows all other components to access the data in the model.~~ So someone pointed out that this definition was vague. After some more reading, it turns out that the Scope is where your application will execute expressions, scopes are nested and the root scope usually doesn't contain anything in it. Without trying to complicate our lift off with definitions, think of the scope *of a controller* as the place where our data is stored which 'forms the glue between the controller and the view'.  
 - **Templates** all HTML files with angular code are known as templates because angular must fill in expressions and other gadgematics.
 - **Directives** apply special behaviour to HTML elements. For example the `ng-app` attribute in our [00-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-0-concepts.html) file is linked to a directive that automatically initializes the application. When we define `ng-model` attributes to our `<input>` element, we create a directive that stores and updates the value from the `<input>` field to the *scope*.
 - **filters** format the value of an expression for display to the user. Filters are very useful and in our [00-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-0-concepts.html) file we use `currency` to format the output of the expression to resemble a bill or currency.
@@ -40,9 +40,9 @@ There are some *buzzwords* used in AngularJS:
 The image summarizes [00-1-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-1-concepts.html)  
 ![Interaction between Controllers-Scope/Model-View](https://docs.angularjs.org/img/guide/concepts-databinding2.png)  *image from [AngularJs Docs](https://docs.angularjs.org/guide/concepts)*
 
-- **Services** contain all the 'independant logic', which is other words is a way to supply and manipulate data to our application. We use services to allow us to resue it in other parts of the application. For example in [00-1-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-1-concepts.html) all the logic was stored within `InvoiceController`. In [00-2-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-2-concepts.html) we will refactor the code to move the conversion logic into a service in another module.
+- **Services** contain all the 'independant logic', which is other words is a way to supply and manipulate data to our application. We use services to allow us to reuse it in other parts of the application. For example in [00-1-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-1-concepts.html) all the logic was stored within `InvoiceController`. In [00-2-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-2-concepts.html) we will refactor the code to move the conversion logic into a service in another module.
 
-- **Dependency Injection** In [00-2-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-2-concepts.html) we see that `ng-app` defines `invoice-srv-demo` as the main module to use in application. In the defintiion of this module we state that `finance` is a dependancy to the main module. We also define the constructor for the controller after passing in the dependancy `currencyConverter` from the finance module. This is known as *dependency injection*
+- **Dependency Injection** In [00-2-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-2-concepts.html) we see that `ng-app` defines `invoice-srv-demo` as the main module to use in application. In the defintiion of this module we state that `finance` is a dependency of the main module. We also define the constructor for the controller after passing in the dependency `currencyConverter` from the finance module. This is known as *dependency injection*
 
 ###00-Spin
 ####The Dot.
@@ -63,7 +63,7 @@ Found this gotcha thanks to [this video](http://www.thinkster.io/angularjs/axAQa
 		</div>
 	</div>
 ```
-If we set up our code as above, *scope inheritence* is broken. Each new `ng-model` that we set up for the `message` is creating a new instance of message which means there is no longer communication between the two `message`s. To rectify this we place a `data` model on the `$scope` which has the `message` property. I like to think of this as each controller getting its own scope because recitifying the code as shown below also doesn't fix the issue and no data is shared between the two controllers.
+If we set up our code as above, *scope inheritence* is broken. Each new `ng-model` that we set up for the `message` is creating a new instance of message which means there is no longer communication between the two `message`s. To rectify this we place a `data` model on the `$scope` which has the `message` property. I like to think of this as each controller getting its own scope because rectifying the code as shown below also doesn't fix the issue and no data is shared between the two controllers.
 ```html
 	<!--Script remains the same-->
 	<div ng-app="">
@@ -114,7 +114,7 @@ We can compare the two using our shopping cart app in [this commit](https://gith
 The docs page regarding [forms](https://docs.angularjs.org/guide/forms) we find a whole load of neat tricks and tips that are demonstrated in [01-01-forms.html](https://github.com/zafarali/learning-angular/blob/master/01-1-forms.html). The page also demonstrates the abilities of `ng-show`, `ng-hide`, and validation techniques that AngularJS provides.
 ###02-Filters
 ####Custom filters
-There's only syntax to learn here, watched this [video] and see the (http://www.thinkster.io/angularjs/EnA7rkqH82/angularjs-filters) dummy code I [typed](https://github.com/zafarali/learning-angular/blob/master/02-1-filters.html) up. Another example is shown below using extra aruments that can be used as `text|decimal2binary:true`:
+There's only syntax to learn here, watch this [video](http://www.thinkster.io/angularjs/EnA7rkqH82/angularjs-filters) and see the ( dummy code I [typed](https://github.com/zafarali/learning-angular/blob/master/02-1-filters.html) up. Another example is shown below using extra arguments that can be used as `text|decimal2binary:true`:
 ```javascript
 //converts decimals to binary form (i don't think this really works)
 app.filter('decimal2binary', function(){
@@ -134,7 +134,7 @@ app.filter('decimal2binary', function(){
 });
 ```
 ####Searching and filters
-We can see an implementation of the search technique in [02-2-filters.html](https://github.com/zafarali/learning-angular/blob/master/02-2-filters.html). Some other in-built AngularJS filters are summarized below:
+We can see an implementation of the search technique in [02-2-filters.html](https://github.com/zafarali/learning-angular/blob/master/02-2-filters.html). Some other built-in AngularJS filters are summarized below:
 - `limitTo` will limit the number of results shown
 - `orderBy` takes a string and will order the results using the property it maps to
 - `lowercase` and `uppercase` turn the results to lower and upper case (these are best applied to the data binding as shown below)
@@ -147,16 +147,16 @@ We can see an implementation of the search technique in [02-2-filters.html](http
 ```
 ###03-Directives
 ####Custom elements
-Directives are one of the  most impressive features AngularJS has to offer. In our first example we create a directive which is of `restrict`ion `'E'` which means that it is an element. Our directive is simple in that it just shows an image of a calculator created by the `<caclulator>` element. The [commit](https://github.com/zafarali/learning-angular/commit/fa0b6c1864501592e73ef3cea3e47e34c9763942) shows the code in detail.
+Directives are one of the  most impressive features AngularJS has to offer. In our first example we created a directive which is of `restrict`ion `'E'` which means that it is an element. Our directive is simple in that it just shows an image of a calculator created by the `<calculator>` element. The [commit](https://github.com/zafarali/learning-angular/commit/fa0b6c1864501592e73ef3cea3e47e34c9763942) shows the code in detail.
 ####Custom Attributes and Classes
-This [commit](https://github.com/zafarali/learning-angular/commit/403aad17fce1eb09e58b759dad63025db5166cf8) demonstrates a custom attribute we build. Here instead of setting `restrict:"E"` we set `restrict:"A"` and provide a `link` function which is executed whenever the attribute is attached. If we set `restrict:"C"` then the directive is executed whenever we have the class with that name [(see commit)](https://github.com/zafarali/learning-angular/commit/552ae91250175137f9e2b742883c7973c463dd48). We can also have directives in comments using `restrict:"M"` and using the following:
+This [commit](https://github.com/zafarali/learning-angular/commit/403aad17fce1eb09e58b759dad63025db5166cf8) demonstrates a custom attribute that we built. Here, instead of setting `restrict:"E"` we set `restrict:"A"` and provide a `link` function which is executed whenever the attribute is attached. If we set `restrict:"C"` then the directive is executed whenever we have the class with that name [(see commit)](https://github.com/zafarali/learning-angular/commit/552ae91250175137f9e2b742883c7973c463dd48). We can also have directives in comments using `restrict:"M"` and the following:
 ```html
 <!--directive:myDirective-->
 ```
 ####Useful Directives
-Directives default to `restrict:"A"`. The directive will also pass in the `scope` and `element` which we can use. As shown in [03-2-directives.html](https://github.com/zafarali/learning-angular/commit/d9e6515d2c8dd7b816907f98b9fa8f75472d4956). The directive also passes the `attrs` which is an object with all the attributes of the element. We can exploit this to make our code abstract when we want to add/remove classes. This is demonstrated in [this commit](https://github.com/zafarali/learning-angular/commit/a0636adf5790aeeb7d20489133bdc23d7d338578). We also see the use of `$apply()` to evaluate functions in [this example](https://github.com/zafarali/learning-angular/blob/master/03-3-directives.html).
+Directives default to `restrict:"A"`. The directive will also pass in the `scope` and `element` which we can use: as shown in [03-2-directives.html](https://github.com/zafarali/learning-angular/commit/d9e6515d2c8dd7b816907f98b9fa8f75472d4956). The directive also passes the `attrs` which is an object with all the attributes of the element. We can exploit this to make our code abstract when we want to add/remove classes. This is demonstrated in [this commit](https://github.com/zafarali/learning-angular/commit/a0636adf5790aeeb7d20489133bdc23d7d338578). We also see the use of `$apply()` to evaluate functions in [this example](https://github.com/zafarali/learning-angular/blob/master/03-3-directives.html).
 ####Directive Communication ([03-4-readinglist.html](https://github.com/zafarali/learning-angular/blob/master/03-4-readinglist.html))
-Directives can communicate with each other as shown in the Reading List Example. Here we create a directive called `<book>` and a couple of attributes that are dependant on the `book` directive.Each `<book>` has a local scope as defined. `<book>` also has an API which can control the local scope. Each attribute we define accesses the `<book>` API to manipulate its properties. The properties can be viewed when we roll over it. A streamlined way (albeit without the romance,thriller etc. properties) is shown in [03-6-elements.html](https://github.com/zafarali/learning-angular/blob/master/03-6-elements.html).  
+Directives can communicate with each other as shown in the Reading List Example. Here we create a directive called `<book>` and a couple of attributes that are dependent on the `book` directive. Each `<book>` has a local scope as defined. `<book>` also has an API which can control the local scope. Each attribute we define accesses the `<book>` API to manipulate its properties. The properties can be viewed when we roll over it. A streamlined way (albeit without the romance,thriller etc. properties) is shown in [03-6-elements.html](https://github.com/zafarali/learning-angular/blob/master/03-6-elements.html).  
 - **Transclusion** We also have a `transclude` property which is demonstrated in [03-5-transclusion.html](https://github.com/zafarali/learning-angular/blob/master/03-5-transclusion.html) that allows whatever is inside our custom element to be placed inside it and not overwritten by the template. 
 - *Nested elements* and how they communicate with each other are demonstrated in [03-7-nested.html](https://github.com/zafarali/learning-angular/blob/master/03-5-transclusion.html)
 
@@ -166,17 +166,17 @@ Here is a summary of the properties I see are most useful in directives:
 - `template:"string"` allows your directives to have a template.
 - `templateUrl:"string"` allows your directive to load a URL as a template.
 - `replace:bool` if true it will replace the current element and by default it is false and will append to the element.
-- `transclude` Lets you move the children of the directive into a place inside the template. We do this by specifiying `ng-transclude` attribute of the target location. example (here it targets the `<span>` and not the other `<div>`s:
+- `transclude` Lets you move the children of the directive into a place inside the template. We do this by specifiying `ng-transclude` attribute of the target location. In this example it targets the `<span>` and not the other `<div>`s:
 ```javascript
 //...
 transclude:true,
 template:"<div><div><span ng-transclude></span></div></div>",
 //...
 ```
-- `link:function()` executes when the directive sets up. Can be useful in setting `timeout`s, or binding `event`s to the element
+- `link:function()` executes when the directive sets up. It can be useful in setting `timeout`s, or binding `event`s to the element.
 - `controller:function()` allows you to set up scope properties and create an interface for other directives to interact with. This is also useful if you have functions in your directive that need to be executed by only your directive.
-- `controllerAs: 'String'` allows you to use the [Controller As]() syntax in your directives. *note that now we don't bind things to `scope` we now bind it to `this`.* Refer notes above for more details on the 'controllerAs' syntax.  
--`scope:{}` allows you to create a new scope for the element rather than inherit from the parent
+- `controllerAs: 'String'` allows you to use the [Controller As]() syntax in your directives. *Note that things are bound to `this` and not to `scope`.* Refer to the notes from above for more details on the 'controllerAs' syntax.  
+-`scope:{}` allows you to create a new scope for the element rather than inherit from the parent.
 - `require:['^directives']` makes it mandatory for the current directive to be nested in the parent to ensure it functions correctly.  
 A quick gotcha to note, when you name your directive `datePicker` when declaring it, you can refer to it as `date-picker` in your HTML.
 

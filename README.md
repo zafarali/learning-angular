@@ -40,7 +40,7 @@ There are some *buzzwords* used in AngularJS:
 The image summarizes [00-1-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-1-concepts.html)  
 ![Interaction between Controllers-Scope/Model-View](https://docs.angularjs.org/img/guide/concepts-databinding2.png)  *image from [AngularJs Docs](https://docs.angularjs.org/guide/concepts)*
 
-- **Services** contain all the 'independant logic', which is other words is a way to supply and manipulate data to our application. We use services to allow us to reuse it in other parts of the application. For example in [00-1-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-1-concepts.html) all the logic was stored within `InvoiceController`. In [00-2-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-2-concepts.html) we will refactor the code to move the conversion logic into a service in another module.
+- **Services** contain all the 'independent logic', which is other words is a way to supply and manipulate data to our application. We use services to allow us to reuse it in other parts of the application. For example in [00-1-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-1-concepts.html) all the logic was stored within `InvoiceController`. In [00-2-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-2-concepts.html) we will refactor the code to move the conversion logic into a service in another module.
 
 - **Dependency Injection** In [00-2-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-2-concepts.html) we see that `ng-app` defines `invoice-srv-demo` as the main module to use in application. In the defintiion of this module we state that `finance` is a dependency of the main module. We also define the constructor for the controller after passing in the dependency `currencyConverter` from the finance module. This is known as *dependency injection*
 
@@ -114,19 +114,13 @@ We can compare the two using our shopping cart app in [this commit](https://gith
 The docs page regarding [forms](https://docs.angularjs.org/guide/forms) we find a whole load of neat tricks and tips that are demonstrated in [01-01-forms.html](https://github.com/zafarali/learning-angular/blob/master/01-1-forms.html). The page also demonstrates the abilities of `ng-show`, `ng-hide`, and validation techniques that AngularJS provides.
 ###02-Filters
 ####Custom filters
-There's only syntax to learn here, watch this [video](http://www.thinkster.io/angularjs/EnA7rkqH82/angularjs-filters) and see the ( dummy code I [typed](https://github.com/zafarali/learning-angular/blob/master/02-1-filters.html) up. Another example is shown below using extra arguments that can be used as `text|decimal2binary:true`:
+There's only syntax to learn here, watch this [video](http://www.thinkster.io/angularjs/EnA7rkqH82/angularjs-filters) and see the dummy code I [typed](https://github.com/zafarali/learning-angular/blob/master/02-1-filters.html) up. Another example is shown below using extra arguments that can be used as `text|decimal2binary:true`:
 ```javascript
-//converts decimals to binary form (i don't think this really works)
+//converts decimal to binary string
 app.filter('decimal2binary', function(){
 	function convert(num,bool){
-		if(bool){ console.log("you said true as argument!");}
-		num = parseInt(num);
-		if(num === 0){
-			return 1;
-		}else{
-			remainder = num % 2;
-			return convert(num/2)+""+remainder;
-		}
+	    if(bool) { console.log('You specified true'); }
+        return parseInt(num,10).toString(2);
 	}
 	return function(input, bool){
 		return convert(input, bool);
@@ -262,7 +256,7 @@ app.controller("Ctrl", function($scope){
 	return $scope.Ctrl = this;
 });
 ```
-We can acess this now using the following html:`<div ng-click="Ctrl.sayHi()">Click</div>`. This serves to make the controller explicit and closely mimics the `Controller as` syntax above.
+We can access this now using the following html:`<div ng-click="Ctrl.sayHi()">Click</div>`. This serves to make the controller explicit and closely mimics the `Controller as` syntax above.
 * Organization. We can organize and initialize our controllers and directives like this. (however this doesn't work for filters)
 ```javascript
 var app = angular.module('myApp', []);
@@ -301,7 +295,7 @@ Now assume we have a `ng-model` input to allow the user to type in the `username
 `$watch` can also watch functions to monitor their return function. The `deepWatch` parameter is a boolean. If set to true and an array of objects is passed into the `toWatch` parameter, each property of the object will be checked for changes.
 
 #### Angular Classes
-Angular automatically adds classes to some elements depending on how its being used. Here are some use cases:
+Angular automatically adds classes to some elements depending on how it's being used. Here are some use cases:
 * `ng-invalid`/`ng-valid` will be on an input element depending on if the text inside has passed validation or not
 * `ng-pristine`/`ng-dirty` - if the user hasn't interacted with an input element it will have the class of `ng-pristine` and if it has been interacted with it will be `ng-dirty`.
 * `ng-binding` is given to any element that has data binding on it.
@@ -320,7 +314,7 @@ A few quick tip:
 
 ### 06-Template
 Templates are an easy way of making your code very organized. [06-0-templateurl.html](https://github.com/zafarali/learning-angular/blob/master/06-0-templateurl.html) demonstrates how to link a partial file into the main view using the `templateUrl` property of a directive. Note that to use `templateUrl` we must have our files on a server. We can use `$templateCache` to load strings of html into the cache to mimic this effect if we do not have a seperate .html file. We then execute it using `app.run()` function.
-We can retrieve whats on `$templateCache` using the `get` function and we can insert things into it using the `put` function as seen in the example at [06-1-templatecache.html](https://github.com/zafarali/learning-angular/blob/master/06-1-templatecache.html)
+We can retrieve what's on `$templateCache` using the `get` function and we can insert things into it using the `put` function as seen in the example at [06-1-templatecache.html](https://github.com/zafarali/learning-angular/blob/master/06-1-templatecache.html)
 
 ### 07-Routing
 *This section requires you to have a server running, this can be easily executed by the bash command `php -S localhost:8080` on a Mac terminal*
@@ -355,7 +349,7 @@ app.config(['$routeProvider', function($routeProvider){
 		//this returns the correct template for the blog, either MyAmazingBlog or ExtraBlogStuff, if not specified it will move onto //the next .when()
 		templateUrl:function(routeParams){
 		return routeParams.blogname+'.html'; },
-		controler:'BlogCtrl'
+		controller:'BlogCtrl'
 	})
 	.when('/blog/:blogpost', {
 		//here we direct our older linked users to the new blog
@@ -365,7 +359,7 @@ app.config(['$routeProvider', function($routeProvider){
 }]);
 ```
 I hope this example clearly demonstrates a use case and how to for using the '$routeParams' and '$routeProvider' objects correctly.  
-*Note: We can other parameters we can pass into the functions within route provider are as follows:*
+*Note: The other parameters we can pass into the functions within route provider are as follows:*
 ```javascript
 function(routeParams, path, search){
 	//routeParams as we have seen above
@@ -542,12 +536,12 @@ scope.$emit('myEventName', 'Hello', 'World');
 //or
 scope.$broadcast('myEventName', 'Bye', 'World');
 ```
-What is the difference between `$emit` and `$broadcast`? As mentioned previously `$emit` propogates the event upwards and all controllers listening for `myEventName` in the parent scopes will be alerted. `$broadcast` does the opposite and propogates the event downwards. Note that both these events will also execute in their own scopes.  
+What is the difference between `$emit` and `$broadcast`? As mentioned previously `$emit` propogates the event upwards and all controllers listening for `myEventName` in the parent scopes will be alerted. `$broadcast` does the opposite and propagates the event downwards. Note that both these events will also execute in their own scopes.  
 
 A new example here [08-2-onEmitBroadcast.html](https://github.com/zafarali/learning-angular/blob/master/08-2-onEmitBroadcast.html) demonstrates this. Remember that declaring a new controller automatically creates a new scope. The page is also demonstrates inherited scopes and overriding properties.
 
 ### Forms
-*Content from this section (Forms) is based of the course [Shaping Up With AngularJS](http://campus.codeschool.com/courses/shaping-up-with-angular-js/)*  
+*Content from this section (Forms) is based off the course [Shaping Up With AngularJS](http://campus.codeschool.com/courses/shaping-up-with-angular-js/)*  
 Remember when we discussed [Angluar Classes above](https://github.com/zafarali/learning-angular#angular-classes)? AngluarJS provides us with a couple of other nice tricks and features that make form validations easier. Let's look at each of them step by step and then do an example:  
 - `ng-submit` is an attribute of the `<form>` element that has the function will be invoked when the user clicks the 'submit' button. Alternatively this function can also be in `ng-click` of the `<button>` element.  
 - `formname.$valid` is an object available on the global scope where formname is the `name` attribute of the `<form>` element. From this we can see that AngluarJS does alot behind the scene for us and will automatically validate the form. Returns `true` or `false`.

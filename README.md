@@ -539,6 +539,7 @@ scope.$broadcast('myEventName', 'Bye', 'World');
 What is the difference between `$emit` and `$broadcast`? As mentioned previously `$emit` propogates the event upwards and all controllers listening for `myEventName` in the parent scopes will be alerted. `$broadcast` does the opposite and propagates the event downwards. Note that both these events will also execute in their own scopes.  
 
 A new example here [08-2-onEmitBroadcast.html](https://github.com/zafarali/learning-angular/blob/master/08-2-onEmitBroadcast.html) demonstrates this. Remember that declaring a new controller automatically creates a new scope. The page is also demonstrates inherited scopes and overriding properties.
+I've realized that this is one of AngularJS' most powerful feature.
 
 ### Forms
 *Content from this section (Forms) is based off the course [Shaping Up With AngularJS](http://campus.codeschool.com/courses/shaping-up-with-angular-js/)*  
@@ -546,6 +547,18 @@ Remember when we discussed [Angluar Classes above](https://github.com/zafarali/l
 - `ng-submit` is an attribute of the `<form>` element that has the function will be invoked when the user clicks the 'submit' button. Alternatively this function can also be in `ng-click` of the `<button>` element.  
 - `formname.$valid` is an object available on the global scope where formname is the `name` attribute of the `<form>` element. From this we can see that AngluarJS does alot behind the scene for us and will automatically validate the form. Returns `true` or `false`.
 - Coupling the `$valid` with the Angluar Classes we can make a very interactive form! See [here for example](https://github.com/zafarali/learning-angular/blob/master/09-0-forms.html)
+
+### `$compile` and Ustable Templates
+So we've wired up our web app with all this AngularJS goodness, everything has rendered and now ready for some juicy interactivity. I recently came across the problem of having to inject new HTML-Angular content into the page when the user clicks on something without changing the view/refreshing the page. I tried to use `$scope.$apply()`, or `$scope.$digest()` but these didn't work. They I figured that Angular doesn't KNOW about this new HTML content of our page.I found a function known as `$compile` that can help us achieve the required functionality.  
+The example is demonstrated in [09-1-compile.html](https://github.com/zafarali/learning-angular/blob/master/09-1-compile.html) where I inject some HTML after the page has loaded. Something that might confuse us: 
+```javascript 
+	//.....
+	//compilation is a two step process:
+	var compiledStuff = $compile(myHTML);
+	//this returns a function that must be bound to a scope:
+	compiledStuff($scope);
+```	
+Now we should be able to load any HTML we need into our page using `$compile`. However, note that if an AngularJS alternative exists, it is recommended to use that.
 
 ### Providers and Injectors (advanced)
 - [ ] To be completed:  

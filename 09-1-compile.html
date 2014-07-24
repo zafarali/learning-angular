@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>$compile</title>
+	<script src="http://code.jquery.com/jquery-2.1.1.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.11/angular.min.js"></script>
+	<script>
+	//controls our form
+	var app = angular.module('app', []);
+	app.controller('MyController', function ($compile, $scope) {
+			$scope.data = {
+				twoWay : 'hello world'
+			}
+		var init = function(){
+			$(document).ready(function(){
+				var toInject = '<span ng-bind="data.twoWay">' + 
+											 $scope.data.twoWay + '</span><br />' + 
+											 '<input type="text" ng-model="data.twoWay" value="' + 
+											 $scope.data.twoWay + '">';
+
+				$('#uncompiled').html(toInject);
+
+				var compiled = $compile(toInject);
+				$('#compiled').html(compiled($scope));
+
+			});
+		}
+
+		init();
+	});
+	</script>
+	<style>div{border:#ccc solid 1px; margin: 15px auto;}</style>
+</head>
+<body ng-app="app" ng-controller="MyController">
+<b>NOTE: Here all three sections must look identical and each should update each other! But notice that the second box doesn't update anything, this is because we did not use $compile on it.</b><br />
+Regular bound 2-way connection: 
+<div>{{data.twoWay}}<br />
+<input type="text" ng-model="data.twoWay"></div>
+
+Uncompiled HTML injected after page compiled:
+<div id="uncompiled"></div>
+
+$compiled HTML injected after page compiled:
+<div id="compiled"></div>
+
+</body>
+</html>

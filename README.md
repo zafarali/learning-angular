@@ -1,6 +1,11 @@
 Learning AngularJS
 ================
-*I noticed how untidy the main folder has become, however I am not going to move any of the files anywhere due to the fact that all the links are now fixed in this README. If there is another tutorial that comes up then I will create a separate folder with the code and README for that curriculum - *Thanks for visiting!* *   
+Updates
+
+**Note: about Angular 2: Angular 2 has many drastic changes, I might get to an Angular 2 tutorial over the summer!**
+
+***I noticed how untidy the main folder has become, however I am not going to move any of the files anywhere due to the fact that all the links are now fixed in this README. If there is another tutorial that comes up then I will create a separate folder with the code and README for that curriculum - *Thanks for visiting!* ***
+
 ![ng!](https://angularjs.org/img/AngularJS-large.png)
 
 So I've been meaning to learn AngularJS for some time now and I've watched a few videos here and there but kept on dropping and never building anything concrete. This repo will help me track my progress through two curriculums I've found on thinkster.io and codeschool.com:  

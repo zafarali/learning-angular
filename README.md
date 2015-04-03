@@ -498,7 +498,7 @@ The functions/methods available to us without any further modification are:
 4. `.$remove()` which does a DELETE request.  
 5. `.$delete()` which does a DELETE request.  
 The getters and the deleters, `.get()`, `.query()`, `.$remove()` and `.$delete()` can be passed a callback function with `(value,headers)` and the error callback is passed with `httpResponse` argument.   
-A full example of this would be `UserProfile.get({id:1}, function(data){/*do success stuff*/}, function(response){/*handle error*/}`.  
+A full example of this would be `UserProfile.get({id:1}, function(data){/*do success stuff*/}, function(response){/*handle error*/})`.  
 The setter `.$save()` is called with some data to be posted and has the same success/error callback pattern.   
 A full example of this would be:
 `Notes.$save({noteId:2, author:'Camillo'}, "This is an amazing note wow", successCallback, errorCallback)`

@@ -498,7 +498,7 @@ The functions/methods available to us without any further modification are:
 4. `.$remove()` which does a DELETE request.  
 5. `.$delete()` which does a DELETE request.  
 The getters and the deleters, `.get()`, `.query()`, `.$remove()` and `.$delete()` can be passed a callback function with `(value,headers)` and the error callback is passed with `httpResponse` argument.   
-A full example of this would be `UserProfile.get({id:1}, function(data){/*do success stuff*/}, function(response){/*handle error*/}.  
+A full example of this would be `UserProfile.get({id:1}, function(data){/*do success stuff*/}, function(response){/*handle error*/}`.  
 The setter `.$save()` is called with some data to be posted and has the same success/error callback pattern.   
 A full example of this would be:
 `Notes.$save({noteId:2, author:'Camillo'}, "This is an amazing note wow", successCallback, errorCallback)`
@@ -541,7 +541,7 @@ scope.$emit('myEventName', 'Hello', 'World');
 //or
 scope.$broadcast('myEventName', 'Bye', 'World');
 ```
-What is the difference between `$emit` and `$broadcast`? As mentioned previously `$emit` propogates the event upwards and all controllers listening for `myEventName` in the parent scopes will be alerted. `$broadcast` does the opposite and propagates the event downwards. Note that both these events will also execute in their own scopes.  
+What is the difference between `$emit` and `$broadcast`? As mentioned previously `$emit` propagates the event upwards and all controllers listening for `myEventName` in the parent scopes will be alerted. `$broadcast` does the opposite and propagates the event downwards. Note that both these events will also execute in their own scopes.  
 
 A new example here [08-2-onEmitBroadcast.html](https://github.com/zafarali/learning-angular/blob/master/08-2-onEmitBroadcast.html) demonstrates this. Remember that declaring a new controller automatically creates a new scope. The page is also demonstrates inherited scopes and overriding properties.
 I've realized that this is one of AngularJS' most powerful feature.

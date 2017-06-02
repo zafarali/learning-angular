@@ -420,7 +420,7 @@ Here are some methods:
 - [ ] To Do The Route Life Cycle
 
 ### Server Communication
-Anyone who has worked with servers and javascript would have come accross AJAX and its method of fetching data from the server using `XMLHttpRequest()`. AngularJS makes it easy to deal with these kind of objects by wrapping them as example one shows.
+Anyone who has worked with servers and javascript would have come across AJAX and its method of fetching data from the server using `XMLHttpRequest()`. AngularJS makes it easy to deal with these kind of objects by wrapping them as example one shows.
 #### `$http`
 ```javascript
 $http.get('api/user/', {params:{id:'5'}}

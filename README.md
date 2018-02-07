@@ -17,18 +17,18 @@ This repository will also include code from other sources which I will cite in t
 
 This README will also track some codes, gotchas, comments and other shenanigans to help others like me learning AngularJS for the first/second/third time. Hope this helps!
 
-#####Prerequisites
+##### Prerequisites
 - [ ] HTML
 - [ ] CSS
 - [ ] JS (OOPs, Prototyping, functions, events, error handling)
 - [ ] Idea of the Model-View-Controller technique
 - [ ] The Document Object Model 
 
-#####Requirements
+##### Requirements
 - [ ] Web browser
 - [ ] Acccess to the O'Rielly AngularJS Book. If you are a student you can access it [here](http://proquest.safaribooksonline.com/book/programming/javascript/9781449355852/firstchapter) using your university VPN. [*AngularJS by Brad Green and Shyam Seshadri (O’Reilly). Copyright 2013 Brad Green and Shyam Seshadri, 978-1-449-34485-6.*]
 
-###00-Concepts
+### 00-Concepts
 AngularJS relies heavily on the MVC approach:
 - a **Model** which contains the data shown to the user in the view and with which the user interacts. (think of it as the place where we store the data)
 - a **View** this is what the user sees. (the user interface or the DOM)
@@ -49,8 +49,8 @@ The image summarizes [00-1-concepts.html](https://github.com/zafarali/learning-a
 
 - **Dependency Injection** In [00-2-concepts.html](https://github.com/zafarali/learning-angular/blob/master/00-2-concepts.html) we see that `ng-app` defines `invoice-srv-demo` as the main module to use in application. In the defintiion of this module we state that `finance` is a dependency of the main module. We also define the constructor for the controller after passing in the dependency `currencyConverter` from the finance module. This is known as *dependency injection*
 
-###00-Spin
-####The Dot.
+### 00-Spin
+#### The Dot.
 Found this gotcha thanks to [this video](http://www.thinkster.io/angularjs/axAQatdKIq/angularjs-the-dot).
 ```html
 	<script>
@@ -98,7 +98,7 @@ However editing the code in a way (below) such that there is a scope set up for 
 		</div>
 ```
 *(this observation is indeed true, we need to have a parent to allow this kind of inheritence)*. We now look at a different way to do this.
-####Data sharing between controllers
+#### Data sharing between controllers
 This can be done by creating a *factory* which will supply the data. We then bind the local `$scope`s to the `Data` factory where we can then sync data between the controllers. See [00-2-spin.html](https://github.com/zafarali/learning-angular/blob/master/00-2-spin.html).
 ```javascript
 var myApp = angular.module('myApp', []);
@@ -106,7 +106,7 @@ myApp.factory('Data', function(){return{message:"this is important"};});
 function myCtrl($scope,Data){$scope.data = Data;}
 function yourCtrl($scope,Data){$scope.data = Data;}
 ```
-###Shopping Cart (01-1-shopping and 01-1-forms)
+### Shopping Cart (01-1-shopping and 01-1-forms)
 The [shopping cart](https://github.com/zafarali/learning-angular/blob/master/01-1-shopping.html) example demonstrates some of the other functionality of the AngularJS framework. You may have noticed that we have seen two ways to creating `controller`s:
 ```javascript
 //method 1
@@ -117,8 +117,8 @@ myApp.controller('Ctrl', function($scope){});
 ```
 We can compare the two using our shopping cart app in [this commit](https://github.com/zafarali/learning-angular/commit/ce54e0d417f80a0087035b62e92a6f8030ccd4c0#diff-1d019a5313eee180347d30c7801153a5). Method 2 ensures that we keep our controllers out of the global namespace using the module we defined.  
 The docs page regarding [forms](https://docs.angularjs.org/guide/forms) we find a whole load of neat tricks and tips that are demonstrated in [01-01-forms.html](https://github.com/zafarali/learning-angular/blob/master/01-1-forms.html). The page also demonstrates the abilities of `ng-show`, `ng-hide`, and validation techniques that AngularJS provides.
-###02-Filters
-####Custom filters
+### 02-Filters
+#### Custom filters
 There's only syntax to learn here, watch this [video](http://www.thinkster.io/angularjs/EnA7rkqH82/angularjs-filters) and see the dummy code I [typed](https://github.com/zafarali/learning-angular/blob/master/02-1-filters.html) up. Another example is shown below using extra arguments that can be used as `text|decimal2binary:true`:
 ```javascript
 //converts decimal to binary string
@@ -132,7 +132,7 @@ app.filter('decimal2binary', function(){
 	}
 });
 ```
-####Searching and filters
+#### Searching and filters
 We can see an implementation of the search technique in [02-2-filters.html](https://github.com/zafarali/learning-angular/blob/master/02-2-filters.html). Some other built-in AngularJS filters are summarized below:
 - `limitTo` will limit the number of results shown
 - `orderBy` takes a string and will order the results using the property it maps to
@@ -144,22 +144,22 @@ We can see an implementation of the search technique in [02-2-filters.html](http
 {{element.lastname | uppercase}}, {{element.firstname | lowercase}}
 </span>
 ```
-###03-Directives
-####Custom elements
+### 03-Directives
+#### Custom elements
 Directives are one of the  most impressive features AngularJS has to offer. In our first example we created a directive which is of `restrict`ion `'E'` which means that it is an element. Our directive is simple in that it just shows an image of a calculator created by the `<calculator>` element. The [commit](https://github.com/zafarali/learning-angular/commit/fa0b6c1864501592e73ef3cea3e47e34c9763942) shows the code in detail.
-####Custom Attributes and Classes
+#### Custom Attributes and Classes
 This [commit](https://github.com/zafarali/learning-angular/commit/403aad17fce1eb09e58b759dad63025db5166cf8) demonstrates a custom attribute that we built. Here, instead of setting `restrict:"E"` we set `restrict:"A"` and provide a `link` function which is executed whenever the attribute is attached. If we set `restrict:"C"` then the directive is executed whenever we have the class with that name [(see commit)](https://github.com/zafarali/learning-angular/commit/552ae91250175137f9e2b742883c7973c463dd48). We can also have directives in comments using `restrict:"M"` and the following:
 ```html
 <!--directive:myDirective-->
 ```
-####Useful Directives
+#### Useful Directives
 Directives default to `restrict:"A"`. The directive will also pass in the `scope` and `element` which we can use: as shown in [03-2-directives.html](https://github.com/zafarali/learning-angular/commit/d9e6515d2c8dd7b816907f98b9fa8f75472d4956). The directive also passes the `attrs` which is an object with all the attributes of the element. We can exploit this to make our code abstract when we want to add/remove classes. This is demonstrated in [this commit](https://github.com/zafarali/learning-angular/commit/a0636adf5790aeeb7d20489133bdc23d7d338578). We also see the use of `$apply()` to evaluate functions in [this example](https://github.com/zafarali/learning-angular/blob/master/03-3-directives.html).
-####Directive Communication ([03-4-readinglist.html](https://github.com/zafarali/learning-angular/blob/master/03-4-readinglist.html))
+#### Directive Communication ([03-4-readinglist.html](https://github.com/zafarali/learning-angular/blob/master/03-4-readinglist.html))
 Directives can communicate with each other as shown in the Reading List Example. Here we create a directive called `<book>` and a couple of attributes that are dependent on the `book` directive. Each `<book>` has a local scope as defined. `<book>` also has an API which can control the local scope. Each attribute we define accesses the `<book>` API to manipulate its properties. The properties can be viewed when we roll over it. A streamlined way (albeit without the romance,thriller etc. properties) is shown in [03-6-elements.html](https://github.com/zafarali/learning-angular/blob/master/03-6-elements.html).  
 - **Transclusion** We also have a `transclude` property which is demonstrated in [03-5-transclusion.html](https://github.com/zafarali/learning-angular/blob/master/03-5-transclusion.html) that allows whatever is inside our custom element to be placed inside it and not overwritten by the template. 
 - *Nested elements* and how they communicate with each other are demonstrated in [03-7-nested.html](https://github.com/zafarali/learning-angular/blob/master/03-5-transclusion.html)
 
-####Directive properties
+#### Directive properties
 Here is a summary of the properties I see are most useful in directives:
 - `restrict:"E"||"A"||"C"||"M"` this declares how the directive behaves, as an element, attribute, class or comment respectively. We can use any combination of these.
 - `template:"string"` allows your directives to have a template.
@@ -179,7 +179,7 @@ template:"<div><div><span ng-transclude></span></div></div>",
 - `require:['^directives']` makes it mandatory for the current directive to be nested in the parent to ensure it functions correctly.  
 A quick gotcha to note, when you name your directive `datePicker` when declaring it, you can refer to it as `date-picker` in your HTML.
 
-####Pre-link, Post-link and Compile
+#### Pre-link, Post-link and Compile
 From the readings it seems there are two important phases when an angular application is being created. 
 1. The Loading of the Script (not so important for us right now)
 2. The **compile phase** is when the directives are registered, the templates are applied and the *compile* function is executed.
@@ -197,9 +197,9 @@ return {
 If we take a look at [03-8-compilevslink.html](https://github.com/zafarali/learning-angular/blob/master/03-8-compilevslink.html), we see the log executes the `controller` and the `compile`'s `pre` and `post` but not the link. Trying different combinations it seems that if you have a `compile`, you cannot have a `link` but you can get the effect of having a `compile` and `link` by setting a `pre` and `post` function to the `compile` function.  
 *UPDATE: I have just seen a [video](http://www.thinkster.io/angularjs/h02stsC3bY/angularjs-angular-element), it is indeed true that you cannot have a `link` function and a `compile` function. However, if we do choose to have a `compile` function, we can return (from the `compile` function) another function that will become the `link` function. Go see the website for a nice example on how this works.
 
-###04-Scopes
+### 04-Scopes
 Scopes can be nested. These nested scopes can either be *child scopes* (which inherits properties from its parents) or *isolate scopes* (which doesn't inherit anything). Everything that we try to evaluate for example `{{name}}` which is input via `ng-model='name'` will be held on the *scope*. Thus we can think of scopes as the link between the controllers/directives and the view.
-####Isolate Scope
+#### Isolate Scope
 We can demonstrate a simple way to create an isolate scope for each directive we create as shown [04-0-scope.html](https://github.com/zafarali/learning-angular/blob/master/04-0-scope.html). When we define a directive, a property we can return is `scope`. This can be set to be `true`, `false`, or `{/*stuff inside*/}`. When we set to `false` (by default), it will use the existing scope in the directive. `true` will inherit the scope from the parent. `{}` will create an isolate scope for each directive. When you define an isolate scope there are *binding strategies* or methods of getting data into that scope. They are discussed below.
 ##### @
 We demonstrate two methods of using attributes to store data into the directives isolate scope in [04-1-scope.html](https://github.com/zafarali/learning-angular/blob/master/04-1-scope.html) 
